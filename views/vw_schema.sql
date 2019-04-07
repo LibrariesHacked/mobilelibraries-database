@@ -7,18 +7,18 @@ select
 	st.name as stop,
 	st.address as address,
 	st.postcode as postcode,
-	st_x(geom) as geox,
-	st_y(geom) as geoy,
-	rt.week_day as day,
+	st_x(st.geom) as geox,
+	st_y(st.geom) as geoy,
+	to_char(rt.start_date, 'day') as day,
 	st.arrival as arrival,
 	st.departure as departure,
 	rt.frequency as frequency,
-	rt.start as start,
-	rt.end as end,
+	rt.start_date as start,
+	rt.end_date as end,
 	case
-		when st.timetable <> '' then st.timetable
-		when rt.timetable <> '' then rt.timetable
-		when mob.timetable <> '' then mob.timetable
+		when st.timetable is not null then st.timetable
+		when rt.timetable is not null then rt.timetable
+		when mob.timetable is not null then mob.timetable
 		else ''
 	end as timetable
 from organisation org

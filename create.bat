@@ -1,0 +1,1 @@
+psql --set=sslmode=require -f create.sql -h host -p port -U username postgres

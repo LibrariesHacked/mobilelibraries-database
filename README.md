@@ -16,7 +16,7 @@ To get the database up and running, following through the steps in the create.sq
 
 ## Deployment
 
-On a live system it is more likely you will need to remotely run the create.sql script.
+On a live system it is more likely you will need to remotely run the create.sql script. In a Windows environment a sample of doing this is included in the create.bat file.
 
 ## Versioning
 
