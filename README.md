@@ -10,13 +10,16 @@ These instructions will get you a copy of the project up and running on your loc
 
 To get this database up and running you'll need a PostgreSQL Server, version 10. With a compatible PostGIS installed.
 
+- [PostgreSQL](https://www.postgresql.org/)
+- [PostGIS](https://postgis.net/)
+
 ### Installing
 
-To get the database up and running, following through the steps in the create.sql file, this can be done directly on the local database using a tool such as [PGAdmin 4](https://www.pgadmin.org/download/).
+To manually install the database schema, follow through the SQL scripts documented in the [create.sql](create.sql) file. This could be done directly on the local database using a tool such as [PGAdmin 4](https://www.pgadmin.org/download/). Alternatively, move on to the deployment section to deploy directly to a server.
 
 ## Deployment
 
-On a live system it is more likely you will need to remotely run the create.sql script. In a Windows environment a sample of doing this is included in the create.bat file.
+On a live system it is more likely you will need to remotely run the [create.sql](create.sql) script, which is set up to be able to be run remotely using psql. In a Windows environment a sample of doing this is included in the [create.bat](create.bat) file.
 
 ## Versioning
 
@@ -34,4 +37,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* All the mobile library services
+* All mobile library services
