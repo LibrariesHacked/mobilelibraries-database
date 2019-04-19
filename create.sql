@@ -20,5 +20,8 @@ set client_encoding = 'UTF8';
 -- create views
 \i 'views/vw_schema.sql';
 
+-- create fucntions
+\i 'functions/fn_loadstaging.sql';
+
 -- load in data
 \i 'load.sql';
