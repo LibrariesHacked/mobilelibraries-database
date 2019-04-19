@@ -4,9 +4,9 @@ create table stop (
 	name character varying (200) not null,
 	community character varying (200),
 	address character varying (250),
-	postcode character varying (10),
-	arrival timestamp with time zone,
-	departure timestamp with time zone,
+	postcode character varying (8),
+	arrival time with time zone,
+	departure time with time zone,
 	timetable character varying (200),
 	constraint pk_stop_id primary key (id),
 	constraint fk_stop_route_id foreign key (route_id) references route(id)

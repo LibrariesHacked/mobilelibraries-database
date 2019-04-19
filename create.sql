@@ -15,6 +15,10 @@ set client_encoding = 'UTF8';
 \i 'tables/tbl_mobile.sql';
 \i 'tables/tbl_route.sql';
 \i 'tables/tbl_stop.sql';
+\i 'tables/tbl_staging.sql';
 
 -- create views
 \i 'views/vw_schema.sql';
+
+-- load in data
+\i 'load.sql';
