@@ -4,5 +4,6 @@ create table organisation (
 	code character (9),
 	website character varying (200),
 	email character varying (200),
+	timetable character varying (200),
 	constraint pk_organisation_id primary key (id)
 );

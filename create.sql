@@ -18,6 +18,7 @@ set client_encoding = 'UTF8';
 \i 'tables/tbl_staging.sql';
 
 -- create views
+\i 'views/vw_mobiles.sql';
 \i 'views/vw_schema.sql';
 
 -- create fucntions
