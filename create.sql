@@ -19,6 +19,7 @@ set client_encoding = 'UTF8';
 \i 'tables/tbl_authentication.sql';
 
 -- create views
+\i 'views/vw_organisations.sql';
 \i 'views/vw_mobiles.sql';
 \i 'views/vw_schema.sql';
 
