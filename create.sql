@@ -22,6 +22,7 @@ set client_encoding = 'UTF8';
 \i 'views/vw_organisations.sql';
 \i 'views/vw_mobiles.sql';
 \i 'views/vw_routes.sql';
+\i 'views/vw_stops.sql';
 \i 'views/vw_schema.sql';
 
 -- create functions
