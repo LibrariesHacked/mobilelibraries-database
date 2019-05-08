@@ -27,6 +27,8 @@ set client_encoding = 'UTF8';
 
 -- create functions
 \i 'functions/fn_loadstaging.sql';
+\i 'functions/fn_bbox.sql';
+\i 'functions/fn_stops_mvt.sql';
 
 -- load in data
 \i 'load.sql';
