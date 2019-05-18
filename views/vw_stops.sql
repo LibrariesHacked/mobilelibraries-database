@@ -14,5 +14,4 @@ select distinct
 from stop s
 join route r on s.route_id = r.id
 join mobile m on m.id = r.mobile_id
-join organisation o on m.organisation_id = o.id
-order by o.id, m.id, r.id, s.id, s.name;
+join organisation o on m.organisation_id = o.id;

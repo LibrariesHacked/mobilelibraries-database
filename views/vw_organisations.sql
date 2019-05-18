@@ -13,5 +13,4 @@ from organisation o
 join mobile m on m.organisation_id = o.id
 join route r on r.mobile_id = m.id
 join stop s on s.route_id = r.id
-group by o.id, o.name, o.timetable
-order by o.id, o.name, o.timetable;
+group by o.id, o.name, o.timetable;

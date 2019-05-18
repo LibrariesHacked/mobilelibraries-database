@@ -9,5 +9,4 @@ select distinct
 from mobile m
 join route r on r.mobile_id = m.id
 join stop s on s.route_id = r.id
-group by m.id, m.organisation_id, m.name, m.timetable
-order by m.organisation_id, m.id, m.name;
+group by m.id, m.organisation_id, m.name, m.timetable;
