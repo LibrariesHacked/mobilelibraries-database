@@ -9,12 +9,12 @@ select
 	st.postcode as postcode,
 	st_x(st.geom) as geox,
 	st_y(st.geom) as geoy,
-	to_char(rt.start_date, 'day') as day,
+	to_char(rt.start, 'day') as day,
 	st.arrival as arrival,
 	st.departure as departure,
 	rt.frequency as frequency,
-	rt.start_date as start,
-	rt.end_date as end,
+	rt.start as start,
+	rt.end as end,
 	case
 		when st.timetable is not null then st.timetable
 		when rt.timetable is not null then rt.timetable

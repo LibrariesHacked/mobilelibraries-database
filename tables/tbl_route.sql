@@ -4,8 +4,8 @@ create table route (
 	name character varying (200) not null,
 	frequency character varying (100) not null,
 	timetable character varying (200),
-	start_date date not null,
-	end_date date,
+	"start" date not null,
+	"end" date,
 	constraint pk_route_id primary key (id),
 	constraint fk_route_mobile_id foreign key (mobile_id) references mobile(id)
 );

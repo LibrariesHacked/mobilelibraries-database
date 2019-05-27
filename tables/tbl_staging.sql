@@ -12,7 +12,7 @@ create table staging (
 	arrival time with time zone not null,
 	departure time with time zone not null,
 	frequency character varying (100) not null,
-	start_date date not null,
-	end_date date,
+	"start" date not null,
+	"end" date,
 	timetable character varying (200)
 );

@@ -27,13 +27,13 @@ begin
 
     -- list of new routes
     with new_routes as (
-        select distinct m.id as mobile_id, s.route, s.frequency, s.start_date, s.end_date from staging s
+        select distinct m.id as mobile_id, s.route, s.frequency, s.start, s.end from staging s
         join mobile m on m.organisation_id = var_organisation_id and m.name = s.mobile
         where not exists(select 1 from route r where r.name = s.route and r.mobile_id = m.id)
     )
     -- insert new routes
-    insert into route (mobile_id, name, frequency, start_date, end_date)
-    select nr.mobile_id, nr.route, nr.frequency, nr.start_date, nr.end_date from new_routes nr;
+    insert into route (mobile_id, name, frequency, "start", "end")
+    select nr.mobile_id, nr.route, nr.frequency, nr.start, nr.end from new_routes nr;
 
     --list of stops
     with stops as (
