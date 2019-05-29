@@ -6,6 +6,8 @@ select distinct
     r.name as name,
     r.frequency as frequency,
     r.timetable as timetable,
+    r.start as start,
+    r.end as end,
     count(distinct s.id) as number_stops
 from route r
 join mobile m on m.id = r.mobile_id
