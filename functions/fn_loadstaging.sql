@@ -18,7 +18,7 @@ begin
     -- list of new mobiles
     with new_mobiles as (
         select distinct mobile from staging s
-        where not exists(select 1 from mobile m where m.name = s.mobile)
+        where not exists(select 1 from mobile m where m.name = s.mobile and m.organisation_id = var_organisation_id)
         and s.organisation = organisation_name
     )
     -- insert new mobiles

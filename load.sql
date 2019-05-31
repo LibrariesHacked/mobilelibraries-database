@@ -25,3 +25,15 @@ drop table organisation_temp;
 -- load Aberdeenshire
 \copy staging from 'data/aberdeenshire.csv' csv header;
 select fn_loadstaging(organisation_name := 'Aberdeenshire');
+
+-- load Angus
+\copy staging from 'data/angus.csv' csv header;
+select fn_loadstaging(organisation_name := 'Angus');
+
+-- load Edinburgh
+\copy staging from 'data/edinburgh.csv' csv header;
+select fn_loadstaging(organisation_name := 'Edinburgh');
+
+-- load Wrexham
+\copy staging from 'data/wrexham.csv' csv header;
+select fn_loadstaging(organisation_name := 'Wrexham');
