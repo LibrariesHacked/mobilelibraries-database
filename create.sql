@@ -15,6 +15,7 @@ set client_encoding = 'UTF8';
 \i 'tables/tbl_mobile.sql';
 \i 'tables/tbl_route.sql';
 \i 'tables/tbl_stop.sql';
+\i 'tables/tbl_trip.sql';
 \i 'tables/tbl_staging.sql';
 \i 'tables/tbl_authentication.sql';
 
@@ -23,6 +24,7 @@ set client_encoding = 'UTF8';
 \i 'views/vw_mobiles.sql';
 \i 'views/vw_routes.sql';
 \i 'views/vw_stops.sql';
+\i 'views/vw_trips.sql';
 \i 'views/vw_schema.sql';
 
 -- create functions
