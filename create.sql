@@ -7,6 +7,9 @@
 -- setup any extensions
 \i 'database/db_extensions.sql';
 
+-- setup any extensions
+\i 'database/db_r_rule_functions.sql';
+
 -- set client encoding
 set client_encoding = 'UTF8';
 
@@ -16,6 +19,7 @@ set client_encoding = 'UTF8';
 \i 'tables/tbl_route.sql';
 \i 'tables/tbl_stop.sql';
 \i 'tables/tbl_trip.sql';
+\i 'tables/tbl_location.sql';
 \i 'tables/tbl_staging.sql';
 \i 'tables/tbl_authentication.sql';
 
@@ -24,13 +28,17 @@ set client_encoding = 'UTF8';
 \i 'views/vw_mobiles.sql';
 \i 'views/vw_routes.sql';
 \i 'views/vw_stops.sql';
+\i 'views/vw_stops_timetable.sql';
 \i 'views/vw_trips.sql';
 \i 'views/vw_schema.sql';
+\i 'views/vw_mobiles_status.sql';
+\i 'views/vw_mobiles_locations.sql';
 
 -- create functions
 \i 'functions/fn_loadstaging.sql';
 \i 'functions/fn_bbox.sql';
 \i 'functions/fn_stops_mvt.sql';
+\i 'functions/fn_updatelocations.sql';
 
 -- load in data
 \i 'load.sql';
