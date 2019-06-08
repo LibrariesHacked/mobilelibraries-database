@@ -1,4 +1,4 @@
-create or replace function fn_loadstaging(organisation_name character varying (200)) returns void as 
+create or replace function fn_load_staging(organisation_name character varying (200)) returns void as 
 $$
 declare
     var_organisation_id integer := 0;

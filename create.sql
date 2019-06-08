@@ -32,13 +32,14 @@ set client_encoding = 'UTF8';
 \i 'views/vw_trips.sql';
 \i 'views/vw_schema.sql';
 \i 'views/vw_mobiles_status.sql';
-\i 'views/vw_mobiles_locations.sql';
+\i 'views/vw_mobiles_location.sql';
 
 -- create functions
-\i 'functions/fn_loadstaging.sql';
+\i 'functions/fn_load_staging.sql';
 \i 'functions/fn_bbox.sql';
 \i 'functions/fn_stops_mvt.sql';
-\i 'functions/fn_updatelocations.sql';
+\i 'functions/fn_update_estimate_locations.sql';
+\i 'functions/fn_estimate_location.sql';
 
 -- load in data
 \i 'load.sql';
