@@ -25,6 +25,8 @@ drop table organisation_temp;
 -- load Aberdeenshire
 \copy staging from 'data/aberdeenshire.csv' csv header;
 select fn_load_staging(organisation_name := 'Aberdeenshire');
+\copy trip_staging from 'data/aberdeenshire_routes.csv' csv header;
+select fn_load_trips_staging();
 
 -- load Angus
 \copy staging from 'data/angus.csv' csv header;

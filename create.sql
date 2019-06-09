@@ -19,6 +19,7 @@ set client_encoding = 'UTF8';
 \i 'tables/tbl_route.sql';
 \i 'tables/tbl_stop.sql';
 \i 'tables/tbl_trip.sql';
+\i 'tables/tbl_trip_staging.sql';
 \i 'tables/tbl_location.sql';
 \i 'tables/tbl_staging.sql';
 \i 'tables/tbl_authentication.sql';
@@ -36,6 +37,7 @@ set client_encoding = 'UTF8';
 
 -- create functions
 \i 'functions/fn_load_staging.sql';
+\i 'functions/fn_load_trips_staging.sql';
 \i 'functions/fn_bbox.sql';
 \i 'functions/fn_stops_mvt.sql';
 \i 'functions/fn_update_estimate_locations.sql';
