@@ -31,11 +31,17 @@ select fn_load_trips_staging();
 -- load Angus
 \copy staging from 'data/angus.csv' csv header;
 select fn_load_staging(organisation_name := 'Angus');
+\copy trip_staging from 'data/angus_routes.csv' csv header;
+select fn_load_trips_staging();
 
 -- load Edinburgh
 \copy staging from 'data/edinburgh.csv' csv header;
 select fn_load_staging(organisation_name := 'Edinburgh');
+\copy trip_staging from 'data/edinburgh_routes.csv' csv header;
+select fn_load_trips_staging();
 
 -- load Wrexham
 \copy staging from 'data/wrexham.csv' csv header;
 select fn_load_staging(organisation_name := 'Wrexham');
+\copy trip_staging from 'data/wrexham_routes.csv' csv header;
+select fn_load_trips_staging();

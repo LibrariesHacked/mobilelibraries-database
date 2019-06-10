@@ -18,9 +18,10 @@ begin
         from trip_staging s)
     insert into trip(route_id, origin_stop_id, destination_stop_id, distance, duration, geom)
     select
+        distinct
 		r.id,
-        (select id from stop os where os.name = t.origin_stop and st_x(os.geom) = t.origin_stop_longitude and st_y(os.geom) = t.origin_stop_latitude) as origin_stop_id,
-        (select id from stop ds where ds.name = t.destination_stop and st_x(ds.geom) = t.destination_stop_longitude and st_y(ds.geom) = t.destination_stop_latitude) as destination_stop_id,
+        (select id from stop os where os.route_id = r.id and os.name = t.origin_stop and st_x(os.geom) = t.origin_stop_longitude and st_y(os.geom) = t.origin_stop_latitude limit 1) as origin_stop_id,
+        (select id from stop ds where ds.route_id = r.id and ds.name = t.destination_stop and st_x(ds.geom) = t.destination_stop_longitude and st_y(ds.geom) = t.destination_stop_latitude limit 1) as destination_stop_id,
         t.distance,
         t.duration,
         t.geom
