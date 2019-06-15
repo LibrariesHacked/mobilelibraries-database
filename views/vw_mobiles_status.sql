@@ -26,13 +26,13 @@ from
 		( select id
 			from stops ct
 			where ct.mobile_id = t.mobile_id
-			and ct.departure <= now()
-			and ct.arrival >= now() limit 1 ) as current_stop_id,
+			and ct.departure > now()
+			and ct.arrival <= now() limit 1 ) as current_stop_id,
 		( select departure
 			from stops ct
 			where ct.mobile_id = t.mobile_id
-			and ct.departure <= now()
-			and ct.arrival >= now() limit 1 ) as current_stop_departure,
+			and ct.departure > now()
+			and ct.arrival <= now() limit 1 ) as current_stop_departure,
 		( select id
 			from stops pt
 			where pt.mobile_id = t.mobile_id

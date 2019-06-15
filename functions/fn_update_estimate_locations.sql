@@ -1,6 +1,14 @@
 create or replace function fn_update_estimate_locations() returns void as 
 $$
+declare
+    last_updated timestamp with time zone := null;
 begin
+
+    -- If we've estimated locations in the last minute then don't do it again
+    select est.updated into last_updated from (select max(updated) as updated from location where update_type = 'Estimated') as est;
+    if last_updated is not null and last_updated > now() - interval '1 minute' then
+        return;
+    end if;
 
     -- Find all the currently active mobiles
     create temp table mobile_trips (
@@ -35,13 +43,15 @@ begin
         t.mobile_id,
         'Estimated',
         now(),
-        fn_estimate_location(t.geom, t.previous_stop_departure, t.next_stop_arrival)
+        fn_estimate_location(t.geom, t.origin_departure, t.destination_arrival)
     from mobile_trips t;
 
     drop table mobile_trips;
     -- Clear out old records
     delete from location
     where updated < (now() - interval '1 minute');
+
+    return;
 
 end;
 $$

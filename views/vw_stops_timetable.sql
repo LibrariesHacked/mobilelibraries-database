@@ -18,7 +18,7 @@ select
      sd.mobile_id,
      sd.route_id,
      (sd.date_timestamp::date + sd.arrival) as arrival,
-     (sd.date_timestamp::date + sd.arrival) as departure
+     (sd.date_timestamp::date + sd.departure) as departure
 from
      (select 
           stops.id,
