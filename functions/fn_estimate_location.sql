@@ -1,4 +1,4 @@
-create or replace function fn_estimate_location(trip geometry, departure timestamp with time zone, arrival timestamp with time zone) returns geometry as 
+create or replace function fn_estimate_location(trip geometry, departure timestamp, arrival timestamp) returns geometry as 
 $$
 declare
     duration numeric := EXTRACT('epoch' FROM arrival - departure) / 60;

@@ -1,7 +1,7 @@
 create or replace function fn_update_estimate_locations() returns void as 
 $$
 declare
-    last_updated timestamp with time zone := null;
+    last_updated timestamp := null;
 begin
 
     -- If we've estimated locations in the last minute then don't do it again
@@ -14,9 +14,9 @@ begin
     create temp table mobile_trips (
         mobile_id int,
         origin_stop_id int,
-        origin_departure timestamp with time zone,
+        origin_departure timestamp,
         destination_stop_id int,
-        destination_arrival timestamp with time zone,
+        destination_arrival timestamp,
         geom geometry
     );
 
