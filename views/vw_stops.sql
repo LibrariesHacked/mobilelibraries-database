@@ -10,7 +10,9 @@ select distinct
     s.postcode as postcode,
     s.arrival as arrival,
     s.departure as departure,
-    s.timetable as timetable
+    s.timetable as timetable,
+	st_x(s.geom) as longitude,
+	st_y(s.geom) as latitude
 from stop s
 join route r on s.route_id = r.id
 join mobile m on m.id = r.mobile_id
