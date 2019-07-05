@@ -38,8 +38,8 @@ begin
     --list of stops
     with stops as (
         select distinct r.id as route_id, s.stop, s.community, s.address, s.postcode, s.arrival, s.departure, s.timetable, st_setsrid(st_makepoint(s.geox, s.geoy), 4326) as geom from staging s
-        join route r on r.name = s.route
         join mobile m on m.name = s.mobile and m.organisation_id = var_organisation_id
+        join route r on r.name = s.route and r.mobile_id = m.id
         join organisation o on o.id = var_organisation_id and m.organisation_id = o.id
     )
     insert into stop (route_id, name, community, address, postcode, arrival, departure, timetable, geom)

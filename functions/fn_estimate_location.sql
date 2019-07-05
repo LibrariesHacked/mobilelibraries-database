@@ -2,9 +2,11 @@ create or replace function fn_estimate_location(trip geometry, departure timesta
 $$
 declare
     duration numeric := EXTRACT('epoch' FROM arrival - departure) / 60;
-    elapsed numeric := EXTRACT('epoch' FROM now() - departure) / 60;
+    elapsed numeric := EXTRACT('epoch' FROM now() at time zone 'Europe/London' - departure) / 60;
+    progress numeric := (elapsed / duration);
+    segment_pont numeric := CASE WHEN progress > 1 THEN 1 ELSE progress END;
 begin
-    return ST_Line_Interpolate_Point(trip, (elapsed / duration));
+    return ST_LineInterpolatePoint(trip, segment_pont);
 end;
 $$
 language plpgsql;

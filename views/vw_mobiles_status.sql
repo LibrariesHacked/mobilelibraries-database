@@ -26,32 +26,32 @@ from
 		( select id
 			from stops ct
 			where ct.mobile_id = t.mobile_id
-			and ct.departure > now()
-			and ct.arrival <= now() limit 1 ) as current_stop_id,
+			and ct.departure > now() at time zone 'Europe/London'
+			and ct.arrival <= now() at time zone 'Europe/London' limit 1 ) as current_stop_id,
 		( select departure
 			from stops ct
 			where ct.mobile_id = t.mobile_id
-			and ct.departure > now()
-			and ct.arrival <= now() limit 1 ) as current_stop_departure,
+			and ct.departure > now() at time zone 'Europe/London'
+			and ct.arrival <= now() at time zone 'Europe/London' limit 1 ) as current_stop_departure,
 		( select id
 			from stops pt
 			where pt.mobile_id = t.mobile_id
-			and pt.departure < now()
+			and pt.departure < now() at time zone 'Europe/London'
 			order by pt.departure desc limit 1 ) as previous_stop_id,
 		( select departure
 			from stops pt
 			where pt.mobile_id = t.mobile_id
-			and pt.departure < now()
+			and pt.departure < now() at time zone 'Europe/London'
 			order by pt.departure desc limit 1 ) as previous_stop_departure,
 		( select id
 			from stops nt
 			where nt.mobile_id = t.mobile_id
-			and nt.arrival > now()
+			and nt.arrival > now() at time zone 'Europe/London'
 			order by nt.arrival asc limit 1 ) as next_stop_id,
 		( select arrival
 			from stops nt
 			where nt.mobile_id = t.mobile_id
-			and nt.arrival > now()
+			and nt.arrival > now() at time zone 'Europe/London'
 			order by nt.arrival asc limit 1 ) as next_stop_arrival
 	from vw_stops_timetable t
 	group by t.mobile_id ) st

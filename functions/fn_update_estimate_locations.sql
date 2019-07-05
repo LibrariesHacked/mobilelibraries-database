@@ -2,11 +2,13 @@ create or replace function fn_update_estimate_locations() returns void as
 $$
 declare
     last_updated timestamp := null;
+    section_interval integer := 30;
+    smoothness integer := 0.5;
 begin
 
     -- If we've estimated locations in the last minute then don't do it again
     select est.updated into last_updated from (select max(updated) as updated from location where update_type = 'Estimated') as est;
-    if last_updated is not null and last_updated > now() - interval '1 minute' then
+    if last_updated is not null and last_updated > (now() at time zone 'Europe/London') - interval '1 minute' then
         return;
     end if;
 
@@ -32,24 +34,26 @@ begin
         t.geom
     from vw_mobiles_status s
     join trip t on t.origin_stop_id = s.previous_stop_id and t.destination_stop_id = s.next_stop_id
-    where route_date = now()::date
+    where route_date = (now() at time zone 'Europe/London')::date
     and previous_stop_id is not null
     and next_stop_id is not null
-    and route_start < now()::time
-    and route_finish > now()::time;
+    and route_start < (now() at time zone 'Europe/London')::time
+    and route_finish > (now() at time zone 'Europe/London')::time;
 
-    insert into location(mobile_id, update_type, updated, geom)
+    insert into location(mobile_id, section_interval, update_type, updated, geom, section)
     select
         t.mobile_id,
+        section_interval,
         'Estimated',
-        now(),
-        fn_estimate_location(t.geom, t.origin_departure, t.destination_arrival)
+        (now() at time zone 'Europe/London'),
+        fn_estimate_location(t.geom, t.origin_departure, t.destination_arrival),
+        fn_estimate_route_section(t.geom, t.origin_departure, t.destination_arrival, section_interval, smoothness)
     from mobile_trips t;
 
     drop table mobile_trips;
     -- Clear out old records
     delete from location
-    where updated < (now() - interval '1 minute');
+    where updated < ((now() at time zone 'Europe/London') - interval '1 minute');
 
     return;
 

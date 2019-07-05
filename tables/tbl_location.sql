@@ -1,6 +1,7 @@
 create table location (
 	id serial,
 	mobile_id integer,
+	section_interval integer,
 	update_type character varying (10),
 	updated timestamp,
 	constraint pk_location_id primary key (id),
@@ -8,3 +9,4 @@ create table location (
 );
 
 select addgeometrycolumn ('public', 'location', 'geom', 4326, 'POINT', 2);
+select addgeometrycolumn ('public', 'location', 'section', 4326, 'LINESTRING', 2);

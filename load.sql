@@ -34,12 +34,6 @@ select fn_load_staging(organisation_name := 'Angus');
 \copy trip_staging from 'data/angus_routes.csv' csv header;
 select fn_load_trips_staging();
 
--- load Edinburgh
-\copy staging from 'data/edinburgh.csv' csv header;
-select fn_load_staging(organisation_name := 'Edinburgh');
-\copy trip_staging from 'data/edinburgh_routes.csv' csv header;
-select fn_load_trips_staging();
-
 -- load West Dunbartonshire
 \copy staging from 'data/west_dunbartonshire.csv' csv header;
 select fn_load_staging(organisation_name := 'West Dunbartonshire');
