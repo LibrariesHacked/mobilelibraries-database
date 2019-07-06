@@ -2,13 +2,13 @@ create or replace function fn_update_estimate_locations() returns void as
 $$
 declare
     last_updated timestamp := null;
-    section_interval integer := 60;
-    smoothness integer := 0.5;
+    section_interval integer := 60; -- number of seconds to estimate
+    smoothness numeric := 0.5; -- how often to provide a point
 begin
 
-    -- If we've estimated locations in the last minute then don't do it again
+    -- If we've estimated locations in the last 10 seconds then don't do it again - we never need to call more often
     select est.updated into last_updated from (select max(updated) as updated from location where update_type = 'Estimated') as est;
-    if last_updated is not null and last_updated > (now() at time zone 'Europe/London') - interval '1 minute' then
+    if last_updated is not null and last_updated > (now() at time zone 'Europe/London') - interval '10 seconds' then
         return;
     end if;
 
@@ -53,7 +53,7 @@ begin
     drop table mobile_trips;
     -- Clear out old records
     delete from location
-    where updated < ((now() at time zone 'Europe/London') - interval '1 minute');
+    where updated < ((now() at time zone 'Europe/London') - interval '10 seconds');
 
     return;
 
