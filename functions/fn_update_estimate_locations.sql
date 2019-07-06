@@ -2,7 +2,7 @@ create or replace function fn_update_estimate_locations() returns void as
 $$
 declare
     last_updated timestamp := null;
-    section_interval integer := 30;
+    section_interval integer := 60;
     smoothness integer := 0.5;
 begin
 

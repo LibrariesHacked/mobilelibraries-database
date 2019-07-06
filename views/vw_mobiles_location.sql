@@ -17,6 +17,7 @@ with locations as
                 (select geom from stop where id = current_stop_id)
             else null
         end as location_geom,
+        l.section as route_section,
         l.update_type,
         l.updated
     from vw_mobiles_status ms
@@ -34,6 +35,7 @@ select
     next_stop_name as next_stop_name,
     coalesce(st_x(location_geom), null) as geox,
     coalesce(st_y(location_geom), null) as geoy,
+    st_asgeojson(route_section) as route_section,
     update_type as update_type,
     updated as updated
 from locations;
