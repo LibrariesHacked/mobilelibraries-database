@@ -35,6 +35,12 @@ select fn_load_staging(organisation_name := 'Angus');
 select fn_load_trips_staging();
 
 -- load West Dunbartonshire
+\copy staging from 'data/north_somerset.csv' csv header;
+select fn_load_staging(organisation_name := 'North Somerset');
+\copy trip_staging from 'data/north_somerset_routes.csv' csv header;
+select fn_load_trips_staging();
+
+-- load West Dunbartonshire
 \copy staging from 'data/west_dunbartonshire.csv' csv header;
 select fn_load_staging(organisation_name := 'West Dunbartonshire');
 \copy trip_staging from 'data/west_dunbartonshire_routes.csv' csv header;
