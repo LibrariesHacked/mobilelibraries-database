@@ -40,6 +40,7 @@ set client_encoding = 'UTF8';
 \i 'functions/fn_load_trips_staging.sql';
 \i 'functions/fn_bbox.sql';
 \i 'functions/fn_stops_mvt.sql';
+\i 'functions/fn_trips_mvt.sql';
 \i 'functions/fn_update_estimate_locations.sql';
 \i 'functions/fn_estimate_location.sql';
 \i 'functions/fn_estimate_route_section.sql';
