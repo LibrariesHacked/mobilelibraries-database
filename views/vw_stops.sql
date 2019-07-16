@@ -24,7 +24,7 @@ select distinct
 		(now() at time zone 'Europe/London')::date,
 		coalesce(r.end, now() + interval '1 year'),
 		52
-    ) as instance) as instances)) as dates,
+    ) as instance) as instances)) as route_dates,
 	st_x(s.geom) as longitude,
 	st_y(s.geom) as latitude
 from stop s
