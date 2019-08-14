@@ -11,3 +11,8 @@ create table route (
 );
 
 select addgeometrycolumn ('public', 'route', 'geom', 4326, 'MULTILINESTRING', 2);
+
+create unique index idx_route_id on route (id);
+create index idx_route_mobileid on route (mobile_id);
+create index idx_route_geom on route using gist (geom);
+cluster route using idx_route_id;

@@ -57,3 +57,5 @@ select fn_load_trips_staging();
 select fn_load_staging(organisation_name := 'Wrexham');
 \copy trip_staging from 'data/wrexham_routes.csv' csv header;
 select fn_load_trips_staging();
+
+vacuum analyze;

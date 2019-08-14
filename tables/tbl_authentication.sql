@@ -5,3 +5,7 @@ create table authentication (
 	constraint pk_authentication_id primary key (id),
 	constraint fk_authentication_organisation_id foreign key (organisation_id) references organisation(id)
 );
+
+create unique index idx_authentication_id on authentication (id);
+create index idx_authentication_organisationid on authentication (organisation_id);
+cluster authentication using idx_authentication_id;

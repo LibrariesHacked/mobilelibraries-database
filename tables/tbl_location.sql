@@ -10,3 +10,9 @@ create table location (
 
 select addgeometrycolumn ('public', 'location', 'geom', 4326, 'POINT', 2);
 select addgeometrycolumn ('public', 'location', 'section', 4326, 'LINESTRING', 2);
+
+create unique index idx_location_id on location (id);
+create index idx_location_mobileid on location (mobile_id);
+create index idx_location_geom on location using gist (geom);
+create index idx_location_section on location using gist (section);
+cluster location using idx_location_id;
