@@ -6,9 +6,9 @@ declare
     smoothness numeric := 0.5; -- how often to provide a point
 begin
 
-    -- If we've estimated locations in the last 10 seconds then don't do it again - we never need to call more often
+    -- If we've estimated locations in the last 15 seconds then don't do it again - we never need to call more often
     select est.updated into last_updated from (select max(updated) as updated from location where update_type = 'Estimated') as est;
-    if last_updated is not null and last_updated > (now() at time zone 'Europe/London') - interval '10 seconds' then
+    if last_updated is not null and last_updated > (now() at time zone 'Europe/London') - interval '15 seconds' then
         return;
     end if;
 

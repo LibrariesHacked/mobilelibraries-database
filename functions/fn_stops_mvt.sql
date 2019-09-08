@@ -6,7 +6,7 @@ declare
 begin
 select st_asmvt(s, 'stop', 4096, 'mvt_geom') into tile
 from (
-    select id, name, community, address, postcode, arrival, departure, timetable, st_asmvtgeom(st_transform(geom, 3857), bbox, 4096, 256, true) as mvt_geom
+    select id, name, st_asmvtgeom(st_transform(geom, 3857), bbox, 4096, 256, true) as mvt_geom
     from stop
     where st_intersects(st_transform(geom, 3857), bbox)
 ) as s;

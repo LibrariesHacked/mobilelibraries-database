@@ -8,7 +8,7 @@ with stops as (
           s.arrival,
           s.departure,
           coalesce(r.end, ((now() at time zone 'Europe/London') + interval '1 year')) as end, 
-          ('FREQ=' || r.frequency ) as frequency
+          r.frequency as frequency
      from stop s 
      join route r on r.id = s.route_id
      join mobile m on r.mobile_id = m.id
