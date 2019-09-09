@@ -4,10 +4,8 @@ with stops as (
           s.id, 
           m.id as mobile_id,
           r.id as route_id,
-          r.start, 
           s.arrival,
           s.departure,
-          coalesce(r.end, ((now() at time zone 'Europe/London') + interval '1 year')) as end, 
           r.frequency as frequency
      from stop s 
      join route r on r.id = s.route_id
@@ -26,11 +24,7 @@ from
           stops.route_id,
           stops.arrival, 
           stops.departure,
-          rrule_event_instances_range(
-               stops.start,
-               stops.frequency, 
-               (now() at time zone 'Europe/London')::date,
-               stops.end,
-               30
-          ) as date_timestamp
-     from stops) sd;
+          re.date_timestamp as date_timestamp
+     from stops
+     join vw_routes_events re
+     on re.id = stops.route_id) sd;

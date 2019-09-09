@@ -1,5 +1,5 @@
 create view vw_organisations as
-select distinct
+select
     o.id as id,
     o.code as code,
     o.name as name,

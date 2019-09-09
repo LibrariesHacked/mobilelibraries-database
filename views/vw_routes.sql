@@ -1,5 +1,5 @@
 create view vw_routes as
-select distinct
+select
     r.id as id,
     o.id as organisation_id,
     m.id as mobile_id,

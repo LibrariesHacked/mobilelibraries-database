@@ -53,7 +53,7 @@ from
 			where nt.mobile_id = t.mobile_id
 			and nt.arrival > now() at time zone 'Europe/London'
 			order by nt.arrival asc limit 1 ) as next_stop_arrival
-	from vw_stops_timetable t
+	from stops t
 	group by t.mobile_id ) st
 left join stop cs on cs.id = current_stop_id
 left join stop ps on ps.id = previous_stop_id

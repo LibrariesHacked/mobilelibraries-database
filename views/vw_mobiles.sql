@@ -1,5 +1,5 @@
 create view vw_mobiles as
-select distinct
+select
     m.id as id,
     m.organisation_id as organisation_id,
     m.name as name,
