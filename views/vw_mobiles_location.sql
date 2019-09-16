@@ -35,7 +35,7 @@ select
     next_stop_name as next_stop_name,
     coalesce(st_x(location_geom), null) as geox,
     coalesce(st_y(location_geom), null) as geoy,
-    st_asgeojson(route_section) as route_section,
+    st_asgeojson(route_section)::json as route_section,
     update_type as update_type,
     updated as updated
 from locations;
