@@ -64,4 +64,10 @@ select fn_load_staging(organisation_name := 'Wrexham');
 \copy trip_staging from 'data/wrexham_routes.csv' csv header;
 select fn_load_trips_staging();
 
+-- load York
+\copy staging from 'data/york.csv' csv header;
+select fn_load_staging(organisation_name := 'York');
+\copy trip_staging from 'data/york_routes.csv' csv header;
+select fn_load_trips_staging();
+
 vacuum analyze;
