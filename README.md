@@ -27,7 +27,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Dave Rowe** - *Initial work* - [DaveBathnes](https://github.com/DaveBathnes)
+- **Dave Rowe** - *Initial work* - [DaveBathnes](https://github.com/DaveBathnes)
 
 See also the list of [contributors](https://github.com/librarieshacked/mobilelibraries-database/contributors) who participated in this project.
 
@@ -37,4 +37,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* All mobile library services
+- All mobile library services
