@@ -40,6 +40,12 @@ select fn_load_staging(organisation_name := 'Cambridgeshire');
 \copy trip_staging from 'data/cambridgeshire_routes.csv' csv header;
 select fn_load_trips_staging();
 
+-- load Essex
+\copy staging from 'data/essex.csv' csv header;
+select fn_load_staging(organisation_name := 'Essex');
+\copy trip_staging from 'data/essex_routes.csv' csv header;
+select fn_load_trips_staging();
+
 -- load Norfolk
 \copy staging from 'data/norfolk.csv' csv header;
 select fn_load_staging(organisation_name := 'Norfolk');
