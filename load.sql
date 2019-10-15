@@ -34,6 +34,12 @@ select fn_load_staging(organisation_name := 'Angus');
 \copy trip_staging from 'data/angus_routes.csv' csv header;
 select fn_load_trips_staging();
 
+-- load Bath and North East Somerset 
+\copy staging from 'data/bath_and_north_east_somerset.csv' csv header;
+select fn_load_staging(organisation_name := 'Bath and North East Somerset');
+\copy trip_staging from 'data/bath_and_north_east_somerset_routes.csv' csv header;
+select fn_load_trips_staging();
+
 -- load Cambridgeshire
 \copy staging from 'data/cambridgeshire.csv' csv header;
 select fn_load_staging(organisation_name := 'Cambridgeshire');
