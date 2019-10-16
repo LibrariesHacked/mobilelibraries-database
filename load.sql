@@ -70,6 +70,12 @@ select fn_load_staging(organisation_name := 'North Somerset');
 \copy trip_staging from 'data/north_somerset_routes.csv' csv header;
 select fn_load_trips_staging();
 
+-- load Milton Keynes
+\copy staging from 'data/milton_keynes.csv' csv header;
+select fn_load_staging(organisation_name := 'Milton Keynes');
+\copy trip_staging from 'data/milton_keynes_routes.csv' csv header;
+select fn_load_trips_staging();
+
 -- load Shropshire
 \copy staging from 'data/shropshire.csv' csv header;
 select fn_load_staging(organisation_name := 'Shropshire');
