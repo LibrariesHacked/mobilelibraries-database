@@ -1,11 +1,11 @@
 create view vw_organisations as
 select
-    o.id as id,
-    o.code as code,
-    o.name as name,
-    o.timetable as timetable,
-    o.website as website,
-    o.email as email,
+    o.id,
+    o.code,
+    o.name,
+    o.timetable,
+    o.website,
+    o.email,
     count(distinct m.id) as number_mobiles,
     count(distinct r.id) as number_routes,
     count(distinct s.id) as number_stops

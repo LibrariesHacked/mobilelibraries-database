@@ -1,9 +1,9 @@
 create view vw_mobiles as
 select
     m.id as id,
-    m.organisation_id as organisation_id,
+    m.organisation_id,
     m.name as name,
-    m.timetable as timetable,
+    m.timetable,
     count(distinct r.id) as number_routes,
     count(distinct s.id) as number_stops
 from mobile m

@@ -1,6 +1,9 @@
 create view vw_stops as
 with route_events as (
-    select id as route_id, date_timestamp as date_timestamp from vw_routes_events
+    select 
+        id as route_id, 
+        date_timestamp
+        from vw_routes_events
 )
 select distinct
     s.id as id,

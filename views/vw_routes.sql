@@ -1,11 +1,11 @@
 create view vw_routes as
 select
-    r.id as id,
+    r.id,
     o.id as organisation_id,
     m.id as mobile_id,
     r.name as name,
-    r.frequency as frequency,
-    r.timetable as timetable,
+    r.frequency,
+    r.timetable,
     r.start as start,
     r.end as end,
     count(distinct s.id) as number_stops

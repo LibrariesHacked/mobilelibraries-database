@@ -23,19 +23,19 @@ with locations as
     from vw_mobiles_status ms
     left join location l on l.mobile_id = ms.mobile_id)
 select 
-    mobile_id as mobile_id,
-    current_stop_id as current_stop_id,
-    current_stop_departure as current_stop_departure,
-    current_stop_name as current_stop_name,
-    previous_stop_id as previous_stop_id,
-    previous_stop_departure as previous_stop_departure,
-    previous_stop_name as previous_stop_name,
-    next_stop_id as next_stop_id,
-    next_stop_arrival as next_stop_arrival,
-    next_stop_name as next_stop_name,
+    mobile_id,
+    current_stop_id,
+    current_stop_departure,
+    current_stop_name,
+    previous_stop_id,
+    previous_stop_departure,
+    previous_stop_name,
+    next_stop_id,
+    next_stop_arrival,
+    next_stop_name,
     coalesce(st_x(location_geom), null) as geox,
     coalesce(st_y(location_geom), null) as geoy,
     st_asgeojson(route_section)::json as route_section,
-    update_type as update_type,
-    updated as updated
+    update_type,
+    updated
 from locations;

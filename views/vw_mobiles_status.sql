@@ -3,21 +3,21 @@ with stops as (
 	select id, arrival, departure, mobile_id
 	from vw_stops_timetable
 )
-select 
+select
 	st.mobile_id,
 	st.route_date,
 	st.route_start,
 	st.route_finish,
 	st.current_stop_id,
-	st.current_stop_departure,
 	cs.name as current_stop_name,
+	cs.departure as current_stop_departure,
 	st.previous_stop_id,
-	st.previous_stop_departure,
+	ps.departure as previous_stop_departure,
 	ps.name as previous_stop_name,
 	st.next_stop_id,
-	st.next_stop_arrival,
+	ns.arrival as next_stop_arrival,
 	ns.name as next_stop_name
-from 
+from
 	( select
 		t.mobile_id,
 		min(t.arrival::date) as route_date,
@@ -28,31 +28,16 @@ from
 			where ct.mobile_id = t.mobile_id
 			and ct.departure > now() at time zone 'Europe/London'
 			and ct.arrival <= now() at time zone 'Europe/London' limit 1 ) as current_stop_id,
-		( select departure
-			from stops ct
-			where ct.mobile_id = t.mobile_id
-			and ct.departure > now() at time zone 'Europe/London'
-			and ct.arrival <= now() at time zone 'Europe/London' limit 1 ) as current_stop_departure,
 		( select id
 			from stops pt
 			where pt.mobile_id = t.mobile_id
 			and pt.departure < now() at time zone 'Europe/London'
 			order by pt.departure desc limit 1 ) as previous_stop_id,
-		( select departure
-			from stops pt
-			where pt.mobile_id = t.mobile_id
-			and pt.departure < now() at time zone 'Europe/London'
-			order by pt.departure desc limit 1 ) as previous_stop_departure,
 		( select id
 			from stops nt
 			where nt.mobile_id = t.mobile_id
 			and nt.arrival > now() at time zone 'Europe/London'
-			order by nt.arrival asc limit 1 ) as next_stop_id,
-		( select arrival
-			from stops nt
-			where nt.mobile_id = t.mobile_id
-			and nt.arrival > now() at time zone 'Europe/London'
-			order by nt.arrival asc limit 1 ) as next_stop_arrival
+			order by nt.arrival asc limit 1 ) as next_stop_id
 	from stops t
 	group by t.mobile_id ) st
 left join stop cs on cs.id = current_stop_id
