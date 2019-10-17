@@ -1,9 +1,10 @@
-create or replace function fn_mobiles_nearest(longitude numeric, latitude numeric, distance integer) returns table (
-    mobile_id integer,
-    stop_id integer,
-    stop_name character varying (200),
-    stop_distance integer
-) as
+create or replace function fn_mobiles_nearest(longitude numeric, latitude numeric, distance integer) returns 
+    table (
+        mobile_id integer,
+        stop_id integer,
+        stop_name character varying (200),
+        stop_distance integer
+    ) as
 $$
 declare
     search_point geometry := st_transform(st_setsrid(st_makepoint(longitude, latitude), 4326), 27700);

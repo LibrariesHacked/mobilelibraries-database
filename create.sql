@@ -45,6 +45,7 @@ set client_encoding = 'UTF8';
 \i 'functions/fn_update_estimate_locations.sql';
 \i 'functions/fn_estimate_location.sql';
 \i 'functions/fn_estimate_route_section.sql';
+\i 'functions/fn_mobiles_nearest.sql';
 
 -- load in data
 \i 'load.sql';

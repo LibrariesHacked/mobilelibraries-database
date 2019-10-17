@@ -15,8 +15,6 @@ select
      stops.id,
      stops.mobile_id,
      stops.route_id,
-     stops.arrival,
-     stops.departure,
      (re.date_timestamp::date + stops.arrival) as arrival,
      (re.date_timestamp::date + stops.departure) as departure
 from stops

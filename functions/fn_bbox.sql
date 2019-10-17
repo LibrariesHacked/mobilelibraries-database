@@ -1,8 +1,8 @@
 create or replace function fn_bbox(x integer, y integer, zoom integer) returns geometry as
 $$
 declare
-    max numeric := 6378137 * pi();
-    res numeric := max * 2 / 2^zoom;
+    max numeric := 20037508.34;
+    res numeric := (max * 2)/(2 ^ zoom);
     bbox geometry;
 begin
     return ST_MakeEnvelope(

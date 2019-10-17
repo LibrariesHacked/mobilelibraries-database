@@ -6,6 +6,6 @@ select
         r.frequency, 
         (now() at time zone 'Europe/London')::date,
         coalesce(r.end, ((now() at time zone 'Europe/London') + interval '1 year')),
-        2
+        4
     ) as date_timestamp
 from route r;
