@@ -8,15 +8,15 @@ select
 	st.route_date,
 	st.route_start,
 	st.route_finish,
-	st.current_stop -> 'id' as current_stop_id,
-	st.current_stop -> 'departure' as current_stop_departure,
-	st.current_stop -> 'name' as current_stop_name,
-	st.previous_stop -> 'id' as previous_stop_id,
-	st.previous_stop -> 'departure' as previous_stop_departure,
-	st.previous_stop -> 'name' as previous_stop_name,
-	st.next_stop -> 'id' as next_stop_id,
-	st.next_stop -> 'arrival' as next_stop_arrival,
-	st.next_stop -> 'name' as next_stop_name
+	(st.current_stop ->> 'id')::integer as current_stop_id,
+	(st.current_stop ->> 'departure')::timestamp as current_stop_departure,
+	(st.current_stop ->> 'name')::text as current_stop_name,
+	(st.previous_stop ->> 'id')::integer as previous_stop_id,
+	(st.previous_stop ->> 'departure')::timestamp as previous_stop_departure,
+	(st.previous_stop ->> 'name')::text as previous_stop_name,
+	(st.next_stop ->> 'id')::integer as next_stop_id,
+	(st.next_stop ->> 'arrival')::timestamp as next_stop_arrival,
+	(st.next_stop ->> 'name')::text as next_stop_name
 from 
 	( select
 		t.mobile_id,
