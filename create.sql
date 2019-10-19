@@ -37,7 +37,7 @@ set client_encoding = 'UTF8';
 \i 'views/vw_mobiles_location.sql';
 
 -- create functions
-\i 'functions/fn_load_staging.sql';
+\i 'functions/fn_load_stops_staging.sql';
 \i 'functions/fn_load_trips_staging.sql';
 \i 'functions/fn_bbox.sql';
 \i 'functions/fn_stops_mvt.sql';

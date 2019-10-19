@@ -1,8 +1,8 @@
 create table trip (
 	id serial,
 	route_id integer,
-	origin_stop_id integer,
-	destination_stop_id integer,
+	origin_stop_id integer not null,
+	destination_stop_id integer not null,
 	distance integer,
 	duration integer,
 	constraint pk_trip_id primary key (id),
