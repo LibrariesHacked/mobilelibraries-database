@@ -82,6 +82,12 @@ select fn_load_stops_staging(organisation_name := 'Shropshire');
 \copy trip_staging from 'data/shropshire_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'Shropshire');
 
+-- load Somerset
+\copy staging from 'data/somerset.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'Somerset');
+\copy trip_staging from 'data/somerset_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'Somerset');
+
 -- load Warwickshire
 \copy staging from 'data/warwickshire.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'Warwickshire');
