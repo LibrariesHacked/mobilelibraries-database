@@ -76,6 +76,18 @@ select fn_load_stops_staging(organisation_name := 'Milton Keynes');
 \copy trip_staging from 'data/milton_keynes_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'Milton Keynes');
 
+-- load Perth and Kinross
+\copy staging from 'data/perth_and_kinross.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'Perth and Kinross');
+\copy trip_staging from 'data/perth_and_kinross_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'Perth and Kinross');
+
+-- load Portsmouth
+\copy staging from 'data/portsmouth.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'Portsmouth');
+\copy trip_staging from 'data/portsmouth_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'Portsmouth');
+
 -- load Shropshire
 \copy staging from 'data/shropshire.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'Shropshire');
