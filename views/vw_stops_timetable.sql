@@ -2,6 +2,7 @@ create view vw_stops_timetable as
 with stops as (
      select
           s.id,
+          s.name,
           m.id as mobile_id,
           r.id as route_id,
           s.arrival,
@@ -13,6 +14,7 @@ with stops as (
 )
 select
      stops.id,
+     stops.name,
      stops.mobile_id,
      stops.route_id,
      (re.date_timestamp::date + stops.arrival) as arrival,

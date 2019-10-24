@@ -1,6 +1,6 @@
 create view vw_mobiles_status as
 with stops as (
-	select id, arrival, departure, mobile_id
+	select id, name, arrival, departure, mobile_id
 	from vw_stops_timetable
 )
 select 
