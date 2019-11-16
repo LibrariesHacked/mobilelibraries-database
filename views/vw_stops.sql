@@ -3,7 +3,7 @@ with route_events as (
     select 
         id as route_id, 
         date_timestamp
-        from vw_routes_events
+    from vw_routes_events
 )
 select distinct
     s.id as id,
@@ -27,6 +27,7 @@ select distinct
 	to_jsonb(array(select date_timestamp::date from (
         select date_timestamp from route_events where route_events.route_id = r.id
     ) as instances)) as route_dates,
+    s.geom as geom,
 	st_x(s.geom) as longitude,
 	st_y(s.geom) as latitude
 from stop s
