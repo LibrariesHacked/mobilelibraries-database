@@ -13,6 +13,7 @@ select distinct
     m.name as mobile_name,
     o.id as organisation_id,
     o.name as organisation_name,
+    o.colour as organisation_colour,
     s.name as name,
     s.community as community,
     s.address as address,
