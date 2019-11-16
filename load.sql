@@ -4,15 +4,17 @@ create table organisation_temp (
 	code character (9),
 	website character varying (200),
 	email character varying (200),
-	domain character varying (200)
+	domain character varying (200),
+	colour character (7),
+	logo character varying (200)
 );
 
 -- import organisations
 \copy organisation_temp from 'data/organisations.csv' csv header;
 
 -- insert into proper table
-insert into organisation(name, code, website, email)
-select name, code, website, email from organisation_temp;
+insert into organisation(name, code, website, email, colour, logo)
+select name, code, website, email, colour, logo from organisation_temp;
 
 -- now insert our authentication table
 insert into authentication(organisation_id, domain)

@@ -6,6 +6,8 @@ select
     o.timetable,
     o.website,
     o.email,
+    o.colour,
+    o.logo,
     count(distinct m.id) as number_mobiles,
     count(distinct r.id) as number_routes,
     count(distinct s.id) as number_stops
