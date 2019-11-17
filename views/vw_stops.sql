@@ -1,9 +1,9 @@
 create view vw_stops as
-with route_events as (
+with dates as (
     select 
-        id as route_id, 
-        date_timestamp
-    from vw_routes_events
+        route_id, 
+        route_date
+    from route_dates
 )
 select distinct
     s.id as id,
@@ -25,8 +25,8 @@ select distinct
     r.end as route_end,
 	to_char(r.start, 'Day') as route_day,
 	r.frequency as route_frequency,
-	to_jsonb(array(select date_timestamp::date from (
-        select date_timestamp from route_events where route_events.route_id = r.id
+	to_jsonb(array(select route_date from (
+        select route_date from dates where dates.route_id = r.id
     ) as instances)) as route_dates,
     s.geom as geom,
 	st_x(s.geom) as longitude,

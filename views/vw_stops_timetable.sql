@@ -17,8 +17,8 @@ select
      stops.name,
      stops.mobile_id,
      stops.route_id,
-     (re.date_timestamp::date + stops.arrival) as arrival,
-     (re.date_timestamp::date + stops.departure) as departure
+     (re.route_date + stops.arrival) as arrival,
+     (re.route_date + stops.departure) as departure
 from stops
-join vw_routes_events re
-on re.id = stops.route_id;
+left join route_dates re
+on re.route_id = stops.route_id;
