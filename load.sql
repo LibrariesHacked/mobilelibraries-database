@@ -108,6 +108,12 @@ select fn_load_stops_staging(organisation_name := 'Warwickshire');
 \copy trip_staging from 'data/warwickshire_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'Warwickshire');
 
+-- load West Berkshire
+\copy staging from 'data/west_berkshire.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'West Berkshire');
+\copy trip_staging from 'data/west_berkshire_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'West Berkshire');
+
 -- load West Dunbartonshire
 \copy staging from 'data/west_dunbartonshire.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'West Dunbartonshire');
