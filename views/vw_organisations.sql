@@ -1,6 +1,7 @@
 create view vw_organisations as
 select
     o.id,
+    c.name as country,
     o.code,
     o.name,
     o.timetable,
@@ -11,8 +12,9 @@ select
     count(distinct m.id) as number_mobiles,
     count(distinct r.id) as number_routes,
     count(distinct s.id) as number_stops
-from organisation o 
+from organisation o
+join country c on c.id = o.country_id
 join mobile m on m.organisation_id = o.id
 join route r on r.mobile_id = m.id
 join stop s on s.route_id = r.id
-group by o.id, o.name, o.timetable;
+group by o.id, c.name, o.name, o.timetable;

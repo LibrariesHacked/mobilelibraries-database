@@ -1,6 +1,7 @@
 -- create temp table for orgs
 create table organisation_temp (
 	name character varying (200) not null,
+	country character varying (200) not null,
 	code character (9),
 	website character varying (200),
 	email character varying (200),
@@ -12,9 +13,13 @@ create table organisation_temp (
 -- import organisations
 \copy organisation_temp from 'data/organisations.csv' csv header;
 
--- insert into proper table
-insert into organisation(name, code, website, email, colour, logo)
-select name, code, website, email, colour, logo from organisation_temp;
+-- import countries
+insert into country(name)
+select distinct country from organisation_temp order by country;
+
+-- insert into organisation table
+insert into organisation(name, country_id, code, website, email, colour, logo)
+select t.name, c.id, t.code, t.website, t.email, t.colour, t.logo from organisation_temp t join country c on c.name = t.country;
 
 -- now insert our authentication table
 insert into authentication(organisation_id, domain)

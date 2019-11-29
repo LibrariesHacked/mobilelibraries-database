@@ -14,6 +14,7 @@
 set client_encoding = 'UTF8';
 
 -- create tables
+\i 'tables/tbl_country.sql';
 \i 'tables/tbl_organisation.sql';
 \i 'tables/tbl_mobile.sql';
 \i 'tables/tbl_route.sql';
