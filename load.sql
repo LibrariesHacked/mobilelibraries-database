@@ -59,6 +59,12 @@ select fn_load_stops_staging(organisation_name := 'Essex');
 \copy trip_staging from 'data/essex_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'Essex');
 
+-- load LibrariesNI
+\copy staging from 'data/librariesni.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'LibrariesNI');
+\copy trip_staging from 'data/librariesni_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'LibrariesNI');
+
 -- load Norfolk
 \copy staging from 'data/norfolk.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'Norfolk');
