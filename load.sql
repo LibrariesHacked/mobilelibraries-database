@@ -53,6 +53,12 @@ select fn_load_stops_staging(organisation_name := 'Cambridgeshire');
 \copy trip_staging from 'data/cambridgeshire_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'Cambridgeshire');
 
+-- Load East Riding of Yorkshire
+\copy staging from 'data/east_riding_of_yorkshire.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'East Riding of Yorkshire');
+\copy trip_staging from 'data/east_riding_of_yorkshire_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'East Riding of Yorkshire');
+
 -- load Essex
 \copy staging from 'data/essex.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'Essex');
