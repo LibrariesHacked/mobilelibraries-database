@@ -9,10 +9,12 @@ create table staging (
 	geox numeric not null,
 	geoy numeric not null,
 	day character varying (9) not null,
+	type character varying (200) not null,
 	arrival time not null,
 	departure time not null,
 	frequency character varying (100) not null,
 	"start" date not null,
 	"end" date,
+	exceptions text,
 	timetable character varying (200)
 );

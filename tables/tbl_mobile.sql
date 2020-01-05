@@ -4,7 +4,7 @@ create table mobile (
 	name character varying (200) not null,
 	timetable character varying (200),
 	constraint pk_mobile_id primary key (id),
-	constraint fk_mobile_organisation_id foreign key (organisation_id) references organisation(id)
+	constraint fk_mobile_organisationid foreign key (organisation_id) references organisation (id)
 );
 
 create unique index idx_mobile_id on mobile (id);

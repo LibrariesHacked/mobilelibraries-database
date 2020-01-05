@@ -7,9 +7,11 @@ create table stop (
 	postcode character varying (8),
 	arrival time,
 	departure time,
+	type character varying (200),
+	exceptions text,
 	timetable character varying (200),
 	constraint pk_stop_id primary key (id),
-	constraint fk_stop_route_id foreign key (route_id) references route(id)
+	constraint fk_stop_routeid foreign key (route_id) references route (id)
 );
 
 select addgeometrycolumn ('public', 'stop', 'geom', 4326, 'POINT', 2);

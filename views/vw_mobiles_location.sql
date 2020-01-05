@@ -11,16 +11,12 @@ with locations as
         ms.next_stop_id,
         ms.next_stop_arrival,
         ms.next_stop_name,
-        case
-            when l.geom is not null then l.geom
-            when l.geom is null and current_stop_id is not null then
-                (select geom from stop where id = current_stop_id)
-            else null
-        end as location_geom,
+        coalesce(l.geom, cs.geom) as location_geom,
         l.section as route_section,
         l.update_type,
         l.updated
     from vw_mobiles_status ms
+    left join stop cs on cs.id = ms.current_stop_id
     left join location l on l.mobile_id = ms.mobile_id)
 select 
     mobile_id,

@@ -7,5 +7,6 @@ create table route_dates (
 );
 
 create unique index idx_routedates_id on route_dates (id);
+create unique index idx_routedates_routedate on route_dates (route_date);
 create unique index idx_routedates_routeid_routedate on route_dates (route_id, route_date);
 cluster route_dates using idx_routedates_id;

@@ -10,11 +10,13 @@ select
 	st_x(st.geom) as geox,
 	st_y(st.geom) as geoy,
 	to_char(rt.start, 'day') as day,
+	st.type as type,
 	st.arrival as arrival,
 	st.departure as departure,
 	rt.frequency as frequency,
 	rt.start as start,
 	rt.end as end,
+	st.exceptions as exceptions,
 	case
 		when st.timetable is not null then st.timetable
 		when rt.timetable is not null then rt.timetable

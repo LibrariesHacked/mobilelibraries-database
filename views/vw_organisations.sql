@@ -17,4 +17,4 @@ join country c on c.id = o.country_id
 join mobile m on m.organisation_id = o.id
 join route r on r.mobile_id = m.id
 join stop s on s.route_id = r.id
-group by o.id, c.name, o.name, o.timetable;
+group by o.id, c.name, o.name, o.timetable, o.website, o.email, o.colour, o.logo;

@@ -6,8 +6,8 @@ create table trip (
 	distance integer,
 	duration integer,
 	constraint pk_trip_id primary key (id),
-	constraint fk_trip_stop_id_origin foreign key (origin_stop_id) references stop(id),
-	constraint fk_trip_stop_id_destination foreign key (destination_stop_id) references stop(id)
+	constraint fk_trip_originstopid foreign key (origin_stop_id) references stop (id),
+	constraint fk_trip_destinationstopid foreign key (destination_stop_id) references stop (id)
 );
 
 select addgeometrycolumn ('public', 'trip', 'geom', 4326, 'LINESTRING', 2);
