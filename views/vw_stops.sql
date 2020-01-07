@@ -1,4 +1,4 @@
-create view vw_stops as
+create or replace view vw_stops as
 select
     s.id as id,
     r.id as route_id,
@@ -21,7 +21,14 @@ select
     s.type as type,
     s.exceptions as exceptions,
 	r.frequency as route_frequency,
-	to_jsonb(array(select route_date from route_dates where route_dates.route_id = r.id)) as route_dates,
+	to_json(array(
+        select 
+            route_date 
+        from route_dates 
+        where route_dates.route_id = r.id
+        and not route_dates.route_date::text = ANY (coalesce(string_to_array(s.exceptions, ','), array[]::text[]))
+        )
+    ) as route_dates,
     s.geom as geom,
 	st_x(s.geom) as longitude,
 	st_y(s.geom) as latitude
