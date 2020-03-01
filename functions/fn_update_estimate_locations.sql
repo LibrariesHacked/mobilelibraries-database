@@ -22,8 +22,7 @@ begin
         geom geometry
     );
 
-    -- the only ones we're interested in are those 'on the road'
-    -- active today, not at a stop, and within their route start and finish
+    -- the ones we're interested in are those 'on the road', active today, not at a stop, and within their route start and finish
     insert into temp_mobile_trips(mobile_id, origin_stop_id, origin_departure, destination_stop_id, destination_arrival, geom)
     select 
         s.mobile_id,

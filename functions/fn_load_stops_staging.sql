@@ -43,13 +43,24 @@ begin
 
     --list of stops
     with stops as (
-        select distinct r.id as route_id, s.stop, s.community, s.address, s.postcode, s.arrival, s.departure, s.timetable, st_setsrid(st_makepoint(s.geox, s.geoy), 4326) as geom from staging s
+        select distinct s.stop, s.community, s.address, s.postcode, s.timetable, st_setsrid(st_makepoint(s.geox, s.geoy), 4326) as geom 
+        from staging s
         join mobile m on m.name = s.mobile and m.organisation_id = var_organisation_id
-        join route r on r.name = s.route and r.mobile_id = m.id
         join organisation o on o.id = var_organisation_id and m.organisation_id = o.id
     )
-    insert into stop (route_id, name, community, address, postcode, arrival, departure, timetable, geom)
-    select st.route_id, st.stop, st.community, st.address, st.postcode, st.arrival, st.departure, st.timetable, st.geom from stops st;
+    insert into stop (name, community, address, postcode, timetable, geom)
+    select st.stop, st.community, st.address, st.postcode, st.timetable, st.geom from stops st;
+
+    -- route to stop mapping
+    with route_stops as (
+        select distinct r.route_id, s.id as stop_id, st.arrival, st.departure
+        from staging st
+        join mobile m on m.name = st.mobile and m.organisation_id = var_organisation_id
+        join organisation o on o.id = var_organisation_id and m.organisation_id = o.id
+        join stop s on s.name = st.stop and s.community = st.community and st_setsrid(st_makepoint(st.geox, st.geoy), 4326) = s.geom
+    )
+    insert into route_stop (route_id, stop_id, arrival, departure)
+    select st.route_id, st.stop_id, st.arrival, st.departure from route_stops rs order by st.route_id, st.stop_id, st.arrival;
 
     -- now delete the staging data
     delete from staging s where s.organisation = organisation_name;

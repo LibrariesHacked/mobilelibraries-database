@@ -6,7 +6,7 @@ declare
     progress numeric := (elapsed / duration);
     segment_fraction numeric := CASE WHEN progress > 1 THEN 1 ELSE progress END;
 begin
-    return ST_LineInterpolatePoint(trip, segment_fraction);
+    return ST_LineInterpolatePoint(trip, round(segment_fraction, 3));
 end;
 $$
 language plpgsql;

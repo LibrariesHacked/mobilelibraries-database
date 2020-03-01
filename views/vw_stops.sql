@@ -12,8 +12,8 @@ select
     s.community as community,
     s.address as address,
     s.postcode as postcode,
-    s.arrival as arrival,
-    s.departure as departure,
+    rs.arrival as arrival,
+    rs.departure as departure,
     s.timetable as timetable,
     r.start as route_start,
     r.end as route_end,
@@ -24,15 +24,16 @@ select
 	to_json(array(
         select 
             route_date 
-        from route_dates 
-        where route_dates.route_id = r.id
-        and not route_dates.route_date::text = ANY (coalesce(string_to_array(s.exceptions, ','), array[]::text[]))
+        from route_date
+        where route_date.route_id = r.id
+        and not route_date.route_date::text = ANY (coalesce(string_to_array(s.exceptions, ','), array[]::text[]))
         )
     ) as route_dates,
     s.geom as geom,
 	st_x(s.geom) as longitude,
 	st_y(s.geom) as latitude
 from stop s
-join route r on s.route_id = r.id
+join route_stop rs on rs.stop_id = s.id
+join route r on rs.route_id = r.id
 join mobile m on m.id = r.mobile_id
 join organisation o on m.organisation_id = o.id;

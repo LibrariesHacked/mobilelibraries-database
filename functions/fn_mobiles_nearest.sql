@@ -12,13 +12,15 @@ begin
 return query (
     with stops as (
         select
+            distinct
             r.mobile_id as mobile_id,
             s.id as stop_id,
             s.name as stop_name,
             s.geom as stop_geom,
             round(st_distance(st_transform(s.geom, 27700), search_point))::integer as stop_distance
         from stop s
-        join route r on r.id = s.route_id
+        join route_stop rs on rs.stop_id = s.id
+        join route r on r.id = rs.route_id
         where st_dwithin(st_transform(s.geom, 27700), search_point, distance)
     )
     select

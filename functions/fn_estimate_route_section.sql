@@ -8,7 +8,7 @@ declare
     end_fraction numeric := ((elapsed + section_time) / duration);
     start_point numeric := CASE WHEN start_fraction < 0 THEN 0 ELSE start_fraction END;
     end_point numeric := CASE WHEN end_fraction >= 1 THEN 1 ELSE end_fraction END;
-    line_substring geometry := ST_LineSubstring(trip, start_point, end_point);
+    line_substring geometry := ST_LineSubstring(trip, round(start_point, 3), round(end_point, 3));
     line_length numeric := ST_Length(line_substring);
     points integer := round((section_time / smoothness));
     section_length numeric := (line_length / points);

@@ -12,5 +12,6 @@ select
 from route r
 join mobile m on m.id = r.mobile_id
 join organisation o on m.organisation_id = o.id
-join stop s on s.route_id = r.id
+join route_stop rs on rs.route_id = r.id
+join stop s on s.id = rs.stop_id
 group by r.id, o.id, m.id, r.name, r.frequency, r.timetable, r.start, r.end;
