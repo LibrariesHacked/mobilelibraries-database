@@ -1,22 +1,22 @@
-create or replace function fn_update_route_dates() returns void as 
+create or replace function fn_update_route_schedule() returns void as 
 $$
 declare
     last_updated date := null;
 begin
 
     -- If we've updated route dates in the last day then don't do it again
-    select updated::date into last_updated from updates where type = 'route_dates';
+    select updated::date into last_updated from updates where type = 'route_schedule';
     if last_updated is not null and last_updated > (now() at time zone 'Europe/London')::date then
         return;
     end if;
 
-    create temp table temp_route_dates (
+    create temp table temp_route_schedule (
         route_id int,
-        route_date date
+        visit date
     );
 
     -- get the route dates
-    insert into temp_route_dates(route_id, route_date)
+    insert into temp_route_schedule(route_id, visit)
     select
         r.id,
         rrule_event_instances_range(
@@ -28,18 +28,18 @@ begin
         )
     from route r;
 
-    truncate route_dates;
+    truncate route_schedule;
 
-    insert into route_dates(route_id, route_date)
-    select route_id, route_date from temp_route_dates;
+    insert into route_schedule(route_id, visit)
+    select route_id, visit from temp_route_schedule;
 
-    drop table temp_route_dates; 
+    drop table temp_route_schedule; 
 
     -- now update the updates table
     if last_updated is not null then
-        update updates set updated = (now() at time zone 'Europe/London') where type = 'route_dates';
+        update updates set updated = (now() at time zone 'Europe/London') where type = 'route_schedule';
     else
-        insert into updates (type, updated) values ('route_dates', (now() at time zone 'Europe/London'));
+        insert into updates (type, updated) values ('route_schedule', (now() at time zone 'Europe/London'));
     end if;
 
     return;

@@ -5,7 +5,7 @@ with stops as (
 )
 select 
 	st.mobile_id,
-	st.route_date,
+	st.visit,
 	st.route_start,
 	st.route_finish,
 	(st.current_stop ->> 'id')::integer as current_stop_id,
@@ -20,7 +20,7 @@ select
 from 
 	( select
 		t.mobile_id,
-		min(t.arrival::date) as route_date,
+		min(t.arrival::date) as visit,
 		min(t.arrival::time) as route_start,
 		max(t.departure::time) as route_finish,
 		( select row_to_json(ct.*)

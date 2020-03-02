@@ -7,7 +7,7 @@ with stops as (
           r.id as route_id,
           rs.arrival,
           rs.departure,
-          rs.exceptions
+          s.exceptions
      from stop s
      join route_stop rs on rs.stop_id = s.id
      join route r on r.id = rs.route_id
@@ -18,8 +18,8 @@ select
      stops.name,
      stops.mobile_id,
      stops.route_id,
-     (rd.route_date + stops.arrival) as arrival,
-     (rd.route_date + stops.departure) as departure
+     (rd.visit + stops.arrival) as arrival,
+     (rd.visit + stops.departure) as departure
 from stops
-left join route_date rd on rd.route_id = stops.route_id
-where not rd.route_date::text = ANY (coalesce(string_to_array(stops.exceptions, ','), array[]::text[]));
+left join route_schedule rd on rd.route_id = stops.route_id
+where not rd.visit::text = ANY (coalesce(string_to_array(stops.exceptions, ','), array[]::text[]));

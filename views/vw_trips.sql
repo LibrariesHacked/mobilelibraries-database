@@ -5,7 +5,6 @@ select
     os.name as origin_stop_name,
     t.destination_stop_id as destination_stop_id,
     ds.name as destination_stop_name,
-    extract(epoch from (ds.arrival - os.departure)) as scheduled_duration,
     t.distance as distance,
     t.duration as duration,
     st_asgeojson(t.geom, 5, 8)::json as route_line

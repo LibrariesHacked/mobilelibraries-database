@@ -18,13 +18,13 @@ set client_encoding = 'UTF8';
 \i 'tables/tbl_organisation.sql';
 \i 'tables/tbl_mobile.sql';
 \i 'tables/tbl_route.sql';
-\i 'tables/tbl_route_dates.sql';
+\i 'tables/tbl_route_schedule.sql';
 \i 'tables/tbl_stop.sql';
+\i 'tables/tbl_route_stop.sql';
 \i 'tables/tbl_trip.sql';
 \i 'tables/tbl_trip_staging.sql';
 \i 'tables/tbl_location.sql';
 \i 'tables/tbl_staging.sql';
-\i 'tables/tbl_authentication.sql';
 \i 'tables/tbl_updates.sql';
 
 -- create views
@@ -45,7 +45,7 @@ set client_encoding = 'UTF8';
 \i 'functions/fn_stops_mvt.sql';
 \i 'functions/fn_trips_mvt.sql';
 \i 'functions/fn_update_estimate_locations.sql';
-\i 'functions/fn_update_route_dates.sql';
+\i 'functions/fn_update_route_schedule.sql';
 \i 'functions/fn_updates.sql';
 \i 'functions/fn_estimate_location.sql';
 \i 'functions/fn_estimate_route_section.sql';

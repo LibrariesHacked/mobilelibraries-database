@@ -23,12 +23,12 @@ select
 	r.frequency as route_frequency,
 	to_json(array(
         select 
-            route_date 
-        from route_date
-        where route_date.route_id = r.id
-        and not route_date.route_date::text = ANY (coalesce(string_to_array(s.exceptions, ','), array[]::text[]))
+            visit 
+        from route_schedule
+        where route_schedule.route_id = r.id
+        and not route_schedule.visit::text = ANY (coalesce(string_to_array(s.exceptions, ','), array[]::text[]))
         )
-    ) as route_dates,
+    ) as route_schedule,
     s.geom as geom,
 	st_x(s.geom) as longitude,
 	st_y(s.geom) as latitude

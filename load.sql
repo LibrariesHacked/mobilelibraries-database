@@ -21,12 +21,6 @@ select distinct country from organisation_temp order by country;
 insert into organisation(name, country_id, code, website, email, colour, logo)
 select t.name, c.id, t.code, t.website, t.email, t.colour, t.logo from organisation_temp t join country c on c.name = t.country;
 
--- now insert our authentication table
-insert into authentication(organisation_id, domain)
-select distinct o.id, t.domain from organisation_temp t
-join organisation o on t.name = o.name
-where t.domain is not null;
-
 drop table organisation_temp;
 
 -- load Aberdeenshire

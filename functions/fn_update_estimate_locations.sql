@@ -33,7 +33,7 @@ begin
         t.geom
     from vw_mobiles_status s
     join trip t on t.origin_stop_id = s.previous_stop_id and t.destination_stop_id = s.next_stop_id
-    where route_date = (now() at time zone 'Europe/London')::date
+    where route_schedule = (now() at time zone 'Europe/London')::date
     and previous_stop_id is not null
     and next_stop_id is not null
     and route_start < (now() at time zone 'Europe/London')::time
