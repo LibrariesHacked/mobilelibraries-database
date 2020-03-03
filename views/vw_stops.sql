@@ -1,10 +1,10 @@
 create or replace view vw_stops as
 select
     s.id as id,
-    r.id as route_id,
-    r.name as route_name,
-    m.id as mobile_id,
-    m.name as mobile_name,
+    array_agg(distinct r.id) as route_ids,
+    array_agg(distinct r.name) as route_names,
+    array_agg(distinct m.id) as mobile_ids,
+    array_agg(distinct m.name) as mobile_names,
     o.id as organisation_id,
     o.name as organisation_name,
     o.colour as organisation_colour,
@@ -12,28 +12,23 @@ select
     s.community as community,
     s.address as address,
     s.postcode as postcode,
-    rs.arrival as arrival,
-    rs.departure as departure,
+    array_agg(distinct rs.arrival) as arrival_times,
+    array_agg(distinct rs.departure) as departure_times,
     s.timetable as timetable,
-    r.start as route_start,
-    r.end as route_end,
-	to_char(r.start, 'Day') as route_day,
+    min(r.start) as route_start,
+    max(r.end) as route_end,
+	array_agg(distinct to_char(r.start, 'FMDay')) as route_days,
     s.type as type,
     s.exceptions as exceptions,
-	r.frequency as route_frequency,
-	to_json(array(
-        select 
-            visit 
-        from route_schedule
-        where route_schedule.route_id = r.id
-        and not route_schedule.visit::text = ANY (coalesce(string_to_array(s.exceptions, ','), array[]::text[]))
-        )
-    ) as route_schedule,
+	array_agg(distinct r.frequency) as route_frequencies,
+	array_agg(distinct sc.visit + rs.arrival) as route_schedule,
     s.geom as geom,
 	st_x(s.geom) as longitude,
 	st_y(s.geom) as latitude
 from stop s
 join route_stop rs on rs.stop_id = s.id
 join route r on rs.route_id = r.id
+join route_schedule sc on sc.route_id = r.id and not sc.visit ::text = ANY (coalesce(string_to_array(s.exceptions, ','), array[]::text[]))
 join mobile m on m.id = r.mobile_id
-join organisation o on m.organisation_id = o.id;
+join organisation o on m.organisation_id = o.id
+group by s.id, o.id, o.name, o.colour, s.name, s.community, s.geom;

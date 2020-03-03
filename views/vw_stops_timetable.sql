@@ -18,8 +18,8 @@ select
      stops.name,
      stops.mobile_id,
      stops.route_id,
-     (rd.visit + stops.arrival) as arrival,
-     (rd.visit + stops.departure) as departure
+     (rs.visit + stops.arrival) as arrival,
+     (rs.visit + stops.departure) as departure
 from stops
-left join route_schedule rd on rd.route_id = stops.route_id
+left join route_schedule rs on rs.route_id = stops.route_id
 where not rd.visit::text = ANY (coalesce(string_to_array(stops.exceptions, ','), array[]::text[]));
