@@ -1,1 +1,1 @@
-create database mobiles_test;
+create database mobiles;

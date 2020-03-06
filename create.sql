@@ -2,7 +2,7 @@
 \i 'database/db_mobiles.sql';
 
 -- switch to using the database
-\c mobiles_test;
+\c mobiles;
 
 -- setup any extensions
 \i 'database/db_extensions.sql';
