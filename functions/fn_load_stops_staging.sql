@@ -58,7 +58,7 @@ begin
         join mobile m on m.name = st.mobile and m.organisation_id = var_organisation_id
         join organisation o on o.id = var_organisation_id and m.organisation_id = o.id
         join route r on r.name = st.route and r.mobile_id = m.id
-        join stop s on s.name = st.stop and s.community = st.community and st_setsrid(st_makepoint(st.geox, st.geoy), 4326) = s.geom
+        join stop s on s.name = st.stop and st_setsrid(st_makepoint(st.geox, st.geoy), 4326) = s.geom
     )
     insert into route_stop (route_id, stop_id, arrival, departure)
     select distinct rs.route_id, rs.stop_id, rs.arrival, rs.departure from route_stops rs order by rs.route_id, rs.stop_id, rs.arrival;

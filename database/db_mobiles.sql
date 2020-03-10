@@ -1,1 +1,1 @@
-create database mobiles;
+create database mobiles_temp;

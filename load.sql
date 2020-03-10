@@ -65,11 +65,23 @@ select fn_load_stops_staging(organisation_name := 'Essex');
 \copy trip_staging from 'data/essex_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'Essex');
 
+-- load Hillingdon
+\copy staging from 'data/hillingdon.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'Hillingdon');
+\copy trip_staging from 'data/hillingdon_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'Hillingdon');
+
 -- load LibrariesNI
 \copy staging from 'data/librariesni.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'LibrariesNI');
 \copy trip_staging from 'data/librariesni_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'LibrariesNI');
+
+-- load Midlothian
+\copy staging from 'data/midlothian.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'Midlothian');
+\copy trip_staging from 'data/midlothian_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'Midlothian');
 
 -- load Milton Keynes
 \copy staging from 'data/milton_keynes.csv' csv header;
@@ -94,6 +106,12 @@ select fn_load_trips_staging(organisation_name := 'North Lincolnshire');
 select fn_load_stops_staging(organisation_name := 'North Somerset');
 \copy trip_staging from 'data/north_somerset_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'North Somerset');
+
+-- load North Yorkshire
+\copy staging from 'data/north_yorkshire.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'North Yorkshire');
+\copy trip_staging from 'data/north_yorkshire_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'North Yorkshire');
 
 -- load Perth and Kinross
 \copy staging from 'data/perth_and_kinross.csv' csv header;
