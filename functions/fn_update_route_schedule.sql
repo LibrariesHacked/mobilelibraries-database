@@ -6,7 +6,7 @@ begin
 
     -- If we've updated route dates in the last day then don't do it again
     select updated::date into last_updated from updates where type = 'route_schedule';
-    if last_updated is not null and last_updated > (now() at time zone 'Europe/London')::date then
+    if last_updated is not null and last_updated >= (now() at time zone 'Europe/London')::date then
         return;
     end if;
 
