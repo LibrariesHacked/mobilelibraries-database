@@ -28,7 +28,7 @@ begin
         )
     from route r;
 
-    truncate route_schedule;
+    delete from route_schedule;
 
     insert into route_schedule(route_id, visit)
     select route_id, visit from temp_route_schedule;

@@ -23,7 +23,9 @@ begin
     )
     -- insert new mobiles
     insert into mobile (organisation_id, name)
-    select distinct var_organisation_id, nm.mobile from new_mobiles nm;
+    select distinct var_organisation_id, nm.mobile 
+    from new_mobiles nm 
+    order by nm.mobile;
 
     -- list of new routes
     with new_routes as (
@@ -39,7 +41,8 @@ begin
         (select frequency from staging s where s.organisation = organisation_name and s.route = nr.route limit 1),
         (select "start" from staging s where s.organisation = organisation_name and s.route = nr.route limit 1),
         (select "end" from staging s where s.organisation = organisation_name and s.route = nr.route limit 1)
-    from new_routes nr;
+    from new_routes nr 
+    order by nr.route;
 
     --list of stops
     with stops as (
@@ -49,7 +52,9 @@ begin
         join organisation o on o.id = var_organisation_id and m.organisation_id = o.id
     )
     insert into stop (name, community, address, postcode, timetable, geom)
-    select st.stop, st.community, st.address, st.postcode, st.timetable, st.geom from stops st;
+    select st.stop, st.community, st.address, st.postcode, st.timetable, st.geom 
+    from stops st
+    order by st.stop;
 
     -- route to stop mapping
     with route_stops as (
@@ -61,7 +66,9 @@ begin
         join stop s on s.name = st.stop and st_setsrid(st_makepoint(st.geox, st.geoy), 4326) = s.geom
     )
     insert into route_stop (route_id, stop_id, arrival, departure)
-    select distinct rs.route_id, rs.stop_id, rs.arrival, rs.departure from route_stops rs order by rs.route_id, rs.stop_id, rs.arrival;
+    select distinct rs.route_id, rs.stop_id, rs.arrival, rs.departure 
+    from route_stops rs 
+    order by rs.route_id, rs.arrival;
 
     -- now delete the staging data
     delete from staging s where s.organisation = organisation_name;

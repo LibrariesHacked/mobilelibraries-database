@@ -9,7 +9,6 @@ create table route_stop (
 );
 
 create unique index idx_routestop_routeid_stopid_arrival on route_stop (route_id, stop_id, arrival);
-create index idx_routestop_routeid on route_stop (route_id);
 create index idx_routestop_stopid on route_stop (stop_id);
 create index idx_routestop_arrival on route_stop (arrival);
 create index idx_routestop_departure on route_stop (departure);

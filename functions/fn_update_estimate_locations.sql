@@ -39,7 +39,7 @@ begin
     and route_start < (now() at time zone 'Europe/London')::time
     and route_finish > (now() at time zone 'Europe/London')::time;
 
-    truncate location;
+    delete from location;
     insert into location(mobile_id, section_interval, update_type, updated, geom, section)
     select
         t.mobile_id,
@@ -48,7 +48,8 @@ begin
         (now() at time zone 'Europe/London'),
         fn_estimate_location(t.geom, t.origin_departure, t.destination_arrival),
         fn_estimate_route_section(t.geom, t.origin_departure, t.destination_arrival, section_interval, smoothness)
-    from temp_mobile_trips t;
+    from temp_mobile_trips t
+    order by t.mobile_id;
 
     drop table temp_mobile_trips;
 

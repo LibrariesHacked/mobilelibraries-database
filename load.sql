@@ -19,7 +19,7 @@ select distinct country from organisation_temp order by country;
 
 -- insert into organisation table
 insert into organisation(name, country_id, code, website, email, colour, logo)
-select t.name, c.id, t.code, t.website, t.email, t.colour, t.logo from organisation_temp t join country c on c.name = t.country;
+select t.name, c.id, t.code, t.website, t.email, t.colour, t.logo from organisation_temp t join country c on c.name = t.country order by c.id, t.name;
 
 drop table organisation_temp;
 
