@@ -47,6 +47,12 @@ select fn_load_stops_staging(organisation_name := 'Bath and North East Somerset'
 \copy trip_staging from 'data/bath_and_north_east_somerset_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'Bath and North East Somerset');
 
+-- load Birmingham
+\copy staging from 'data/birmingham.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'Birmingham');
+\copy trip_staging from 'data/birmingham_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'Birmingham');
+
 -- load Cambridgeshire
 \copy staging from 'data/cambridgeshire.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'Cambridgeshire');
