@@ -16,7 +16,7 @@ select
 	rt.frequency as frequency,
 	rt.start as start,
 	rt.end as end,
-	st.exceptions as exceptions,
+	array_to_string(rs.exceptions, ',') as exceptions,
 	case
 		when st.timetable is not null then st.timetable
 		when rt.timetable is not null then rt.timetable

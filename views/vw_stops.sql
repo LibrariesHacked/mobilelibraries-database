@@ -19,7 +19,7 @@ select
     max(r.end) as route_end,
 	array_agg(distinct to_char(r.start, 'FMDay')) as route_days,
     s.type as type,
-    s.exceptions as exceptions,
+    rs.exceptions as exceptions,
 	array_agg(distinct r.frequency) as route_frequencies,
 	array_agg(distinct sc.visit + rs.arrival) as route_schedule,
     s.geom as geom,
@@ -28,7 +28,7 @@ select
 from stop s
 join route_stop rs on rs.stop_id = s.id
 join route r on rs.route_id = r.id
-join route_schedule sc on sc.route_id = r.id and not sc.visit ::text = ANY (coalesce(string_to_array(s.exceptions, ','), array[]::text[]))
+join route_schedule sc on sc.route_id = r.id and not sc.visit::text = ANY (coalesce(rs.exceptions, array[]::text[]))
 join mobile m on m.id = r.mobile_id
 join organisation o on m.organisation_id = o.id
-group by s.id, o.id, o.name, o.colour, s.name, s.community, s.geom;
+group by s.id, o.id, o.name, o.colour, s.name, s.community, rs.exceptions, s.geom;

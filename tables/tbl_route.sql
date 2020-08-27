@@ -16,6 +16,5 @@ create unique index idx_route_id on route (id);
 create unique index idx_route_id_mobileid on route (id, mobile_id);
 create index idx_route_start on route ("start");
 create index idx_route_end on route ("end");
-create index idx_route_frequency on route ("frequency");
 create index idx_route_geom on route using gist (geom);
 cluster route using idx_route_id_mobileid;

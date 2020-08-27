@@ -2,6 +2,7 @@ create view vw_mobiles_status as
 with stops as (
 	select id, name, arrival, departure, mobile_id
 	from vw_stops_timetable
+	where arrival::date <= ((now() at time zone 'Europe/London')::date + 1)
 )
 select 
 	st.mobile_id,
