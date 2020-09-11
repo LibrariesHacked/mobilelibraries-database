@@ -2,7 +2,7 @@ create view vw_organisations as
 select
     o.id,
     c.name as country,
-    o.code,
+    o.code as service_code,
     o.name,
     o.timetable,
     o.website,
@@ -18,4 +18,4 @@ join mobile m on m.organisation_id = o.id
 join route r on r.mobile_id = m.id
 join route_stop rs on rs.route_id = r.id
 join stop s on rs.stop_id = s.id
-group by o.id, c.name, o.name, o.timetable, o.website, o.email, o.colour, o.logo;
+group by o.id, c.name, o.code, o.name, o.timetable, o.website, o.email, o.colour, o.logo;

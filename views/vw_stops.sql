@@ -8,6 +8,7 @@ select
     o.id as organisation_id,
     o.name as organisation_name,
     o.colour as organisation_colour,
+    o.code as service_code,
     s.name as name,
     s.community as community,
     s.address as address,
@@ -31,4 +32,4 @@ join route r on rs.route_id = r.id
 join route_schedule sc on sc.route_id = r.id and not sc.visit::text = ANY (coalesce(rs.exceptions, array[]::text[]))
 join mobile m on m.id = r.mobile_id
 join organisation o on m.organisation_id = o.id
-group by s.id, o.id, o.name, o.colour, s.name, s.community, rs.exceptions, s.geom;
+group by s.id, o.id, o.name, o.colour, o.code, s.name, s.community, rs.exceptions, s.geom;

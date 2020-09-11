@@ -4,7 +4,7 @@ This is the database for the [mobile libraries project](https://blog.librarydata
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See the deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
@@ -20,10 +20,6 @@ To manually install the database schema, follow through the SQL scripts document
 ## Deployment
 
 On a live system it is more likely you will need to remotely run the [create.sql](create.sql) script, which is set up to be able to be run remotely using psql. In a Windows environment a sample of doing this is included in the [create.bat](create.bat) file.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/librarieshacked/mobilelibraries-database/tags).
 
 ## Authors
 
