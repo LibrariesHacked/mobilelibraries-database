@@ -149,6 +149,12 @@ select fn_load_stops_staging(organisation_name := 'South Gloucestershire');
 \copy trip_staging from 'data/south_gloucestershire_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'South Gloucestershire');
 
+-- load Suffolk
+\copy staging from 'data/suffolk.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'Suffolk');
+\copy trip_staging from 'data/suffolk_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'Suffolk');
+
 -- load Warwickshire
 \copy staging from 'data/warwickshire.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'Warwickshire');
