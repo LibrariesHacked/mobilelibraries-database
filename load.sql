@@ -173,6 +173,12 @@ select fn_load_stops_staging(organisation_name := 'West Dunbartonshire');
 \copy trip_staging from 'data/west_dunbartonshire_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'West Dunbartonshire');
 
+-- load Wiltshire
+\copy staging from 'data/wiltshire.csv' csv header;
+select fn_load_stops_staging(organisation_name := 'Wiltshire');
+\copy trip_staging from 'data/wiltshire_routes.csv' csv header;
+select fn_load_trips_staging(organisation_name := 'Wiltshire');
+
 -- load Worcestershire
 \copy staging from 'data/worcestershire.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'Worcestershire');
