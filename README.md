@@ -1,6 +1,6 @@
-# Mobile Libaries Database
+# Mobile libaries database
 
-This is the database for the [mobile libraries project](https://blog.librarydata.uk/mobile-library-data-project). The database is developed using PostgreSQL and PostGIS.
+This is the database for the [mobile library project](https://blog.librarydata.uk/mobile-library-data-project). The database is developed using PostgreSQL and PostGIS.
 
 ## Getting Started
 
@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-To get this database up and running you'll need a PostgreSQL Server, version 10. With a compatible PostGIS installed.
+To get this database up and running you'll need a PostgreSQL Server, from version 10. With a compatible PostGIS installed.
 
 - [PostgreSQL](https://www.postgresql.org/)
 - [PostGIS](https://postgis.net/)
@@ -20,6 +20,12 @@ To manually install the database schema, follow through the SQL scripts document
 ## Deployment
 
 On a live system it is more likely you will need to remotely run the [create.sql](create.sql) script, which is set up to be able to be run remotely using psql. In a Windows environment a sample of doing this is included in the [create.bat](create.bat) file.
+
+```console
+psql --set=sslmode=require -f create.sql -h host -p 5432 -U username postgres
+```
+
+Replace the username and host with the appropriate values for your server.
 
 ## Authors
 
