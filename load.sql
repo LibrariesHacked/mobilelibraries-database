@@ -23,12 +23,6 @@ select t.name, c.id, t.code, t.website, t.email, t.colour, t.logo from organisat
 
 drop table organisation_temp;
 
--- load Aberdeenshire
-\copy staging from 'data/aberdeenshire.csv' csv header;
-select fn_load_stops_staging(organisation_name := 'Aberdeenshire');
-\copy trip_staging from 'data/aberdeenshire_routes.csv' csv header;
-select fn_load_trips_staging(organisation_name := 'Aberdeenshire');
-
 -- load Angus
 \copy staging from 'data/angus.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'Angus');
