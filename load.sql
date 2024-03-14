@@ -83,12 +83,6 @@ select fn_load_stops_staging(organisation_name := 'Midlothian');
 \copy trip_staging from 'data/midlothian_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'Midlothian');
 
--- load Milton Keynes
-\copy staging from 'data/milton_keynes.csv' csv header;
-select fn_load_stops_staging(organisation_name := 'Milton Keynes');
-\copy trip_staging from 'data/milton_keynes_routes.csv' csv header;
-select fn_load_trips_staging(organisation_name := 'Milton Keynes');
-
 -- load Norfolk
 \copy staging from 'data/norfolk.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'Norfolk');
@@ -137,12 +131,6 @@ select fn_load_stops_staging(organisation_name := 'Somerset');
 \copy trip_staging from 'data/somerset_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'Somerset');
 
--- load South Gloucestershire
-\copy staging from 'data/south_gloucestershire.csv' csv header;
-select fn_load_stops_staging(organisation_name := 'South Gloucestershire');
-\copy trip_staging from 'data/south_gloucestershire_routes.csv' csv header;
-select fn_load_trips_staging(organisation_name := 'South Gloucestershire');
-
 -- load Suffolk
 \copy staging from 'data/suffolk.csv' csv header;
 select fn_load_stops_staging(organisation_name := 'Suffolk');
@@ -178,12 +166,6 @@ select fn_load_trips_staging(organisation_name := 'Wiltshire');
 select fn_load_stops_staging(organisation_name := 'Worcestershire');
 \copy trip_staging from 'data/worcestershire_routes.csv' csv header;
 select fn_load_trips_staging(organisation_name := 'Worcestershire');
-
--- load Wrexham
-\copy staging from 'data/wrexham.csv' csv header;
-select fn_load_stops_staging(organisation_name := 'Wrexham');
-\copy trip_staging from 'data/wrexham_routes.csv' csv header;
-select fn_load_trips_staging(organisation_name := 'Wrexham');
 
 -- load York
 \copy staging from 'data/york.csv' csv header;
