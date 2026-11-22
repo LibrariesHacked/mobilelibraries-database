@@ -1,0 +1,92 @@
+name: Sync data and update database
+
+on:
+  schedule:
+    # Run nightly at 02:00 UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      skip_db_update:
+        description: 'Skip database update (sync repository data only)'
+        required: false
+        type: boolean
+        default: false
+  repository_dispatch:
+    types: [mobilelibraries_data_updated]
+
+permissions:
+  contents: write
+
+jobs:
+  sync-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout mobilelibraries-database
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Checkout mobilelibraries-data
+        uses: actions/checkout@v4
+        with:
+          repository: 'LibrariesHacked/mobilelibraries-data'
+          path: 'mobilelibraries-data'
+
+      - name: Sync data and regenerate SQL scripts
+        run: |
+          python scripts/sync_data.py --source mobilelibraries-data
+
+      - name: Check for repository changes
+        id: git_status
+        run: |
+          git status --porcelain
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push changes
+        if: steps.git_status.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ load.sql update.sql tables/ functions/ views/ database/
+          git commit -m "Auto-sync mobile library data from mobilelibraries-data [skip ci]"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install PostgreSQL client
+        if: ${{ inputs.skip_db_update != true }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+
+      - name: Process database update
+        if: ${{ inputs.skip_db_update != true && env.PGHOST != '' }}
+        env:
+          PGHOST: ${{ secrets.PGHOST }}
+          PGUSER: ${{ secrets.PGUSER }}
+          PGDATABASE: ${{ secrets.PGDATABASE || 'mobiles' }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          PGPORT: ${{ secrets.PGPORT || '5432' }}
+          PGSSLMODE: 'require'
+        run: |
+          echo "Connecting to PostgreSQL at $PGHOST:$PGPORT (database: $PGDATABASE)..."
+          psql --set=sslmode=require -f update.sql
+          echo "Database update completed successfully."
+
+      - name: Report status if database credentials are not configured
+        if: ${{ inputs.skip_db_update != true && env.PGHOST == '' }}
+        run: |
+          echo "Notice: PGHOST secret is not configured in repository secrets."
+          echo "Data sync to repository completed, but database update was skipped."
+          echo "To enable automated database updates, configure PGHOST, PGUSER, PGDATABASE, and PGPASSWORD secrets."
+        env:
+          PGHOST: ${{ secrets.PGHOST }}

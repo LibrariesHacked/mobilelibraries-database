@@ -9,5 +9,5 @@ create table trip_staging (
 	origin_stop character varying (200) not null,
 	origin_stop_latitude numeric not null,
 	origin_stop_longitude numeric not null,
-	route character varying (200) not null
+	route character varying (300) not null
 );

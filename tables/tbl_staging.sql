@@ -1,7 +1,8 @@
 create table staging (
-	organisation character varying (200) not null,
-	mobile character varying (200) not null,
-	route character varying (200) not null,
+	local_authority character varying (200) not null,
+	local_authority_code character (9) not null,
+	mobile_name character varying (200) not null,
+	route character varying (300) not null,
 	community character varying (200),
 	stop character varying (200) not null,
 	address character varying (250),

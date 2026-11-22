@@ -6,4 +6,5 @@ create table route_schedule (
 );
 
 create unique index idx_routeschedule_routeid_visit on route_schedule (route_id, visit);
+create index idx_routeschedule_visit on route_schedule (visit);
 cluster route_schedule using idx_routeschedule_routeid_visit;

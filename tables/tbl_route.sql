@@ -1,7 +1,7 @@
 create table route (
 	id serial,
 	mobile_id integer not null,
-	name character varying (200) not null,
+	name character varying (300) not null,
 	frequency character varying (100) not null,
 	timetable character varying (200),
 	"start" date not null,

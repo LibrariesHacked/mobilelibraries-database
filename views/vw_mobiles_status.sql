@@ -1,8 +1,8 @@
-create view vw_mobiles_status as
+create or replace view vw_mobiles_status as
 with stops as (
 	select id, name, arrival, departure, mobile_id
 	from vw_stops_timetable
-	where arrival::date <= ((now() at time zone 'Europe/London')::date + 1)
+	where arrival::date = (now() at time zone 'Europe/London')::date
 )
 select 
 	st.mobile_id,
@@ -27,17 +27,17 @@ from
 		( select row_to_json(ct.*)
 			from stops ct
 			where ct.mobile_id = t.mobile_id
-			and ct.departure > now() at time zone 'Europe/London'
-			and ct.arrival <= now() at time zone 'Europe/London' limit 1 ) as current_stop,
+			and ct.departure > (now() at time zone 'Europe/London')
+			and ct.arrival <= (now() at time zone 'Europe/London') limit 1 ) as current_stop,
 		( select row_to_json(pt.*)
 			from stops pt
 			where pt.mobile_id = t.mobile_id
-			and pt.departure < now() at time zone 'Europe/London'
+			and pt.departure < (now() at time zone 'Europe/London')
 			order by pt.departure desc limit 1 ) as previous_stop,
 		( select row_to_json(nt.*)
 			from stops nt
 			where nt.mobile_id = t.mobile_id
-			and nt.arrival > now() at time zone 'Europe/London'
+			and nt.arrival > (now() at time zone 'Europe/London')
 			order by nt.arrival asc limit 1 ) as next_stop
 	from stops t
 	group by t.mobile_id ) st;

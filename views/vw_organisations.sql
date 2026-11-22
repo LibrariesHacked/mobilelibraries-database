@@ -1,8 +1,9 @@
-create view vw_organisations as
+create or replace view vw_organisations as
 select
     o.id,
     c.name as country,
     o.code as service_code,
+    o.code as local_authority_code,
     o.name,
     o.timetable,
     o.website,

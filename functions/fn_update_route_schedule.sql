@@ -10,37 +10,25 @@ begin
         return;
     end if;
 
-    create temp table temp_route_schedule (
-        route_id int,
-        visit date
-    );
+    delete from route_schedule;
 
-    -- get the route dates
-    insert into temp_route_schedule(route_id, visit)
+    -- calculate and insert schedule directly without temporary table overhead
+    insert into route_schedule (route_id, visit)
     select
         r.id,
         rrule_event_instances_range(
             r.start,
             r.frequency, 
             (now() at time zone 'Europe/London')::date,
-            coalesce(r.end, ((now() at time zone 'Europe/London') + interval '1 year')),
+            coalesce(r.end, ((now() at time zone 'Europe/London') + interval '1 year')::date),
             30
         )
     from route r;
 
-    delete from route_schedule;
-
-    insert into route_schedule(route_id, visit)
-    select route_id, visit from temp_route_schedule;
-
-    drop table temp_route_schedule; 
-
-    -- now update the updates table
-    if last_updated is not null then
-        update updates set updated = (now() at time zone 'Europe/London') where type = 'route_schedule';
-    else
-        insert into updates (type, updated) values ('route_schedule', (now() at time zone 'Europe/London'));
-    end if;
+    -- upsert update timestamp
+    insert into updates (type, updated)
+    values ('route_schedule', (now() at time zone 'Europe/London'))
+    on conflict (type) do update set updated = excluded.updated;
 
     return;
 

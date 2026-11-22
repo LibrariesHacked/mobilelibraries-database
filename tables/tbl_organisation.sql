@@ -2,15 +2,18 @@ create table organisation (
 	id serial,
 	country_id integer not null,
 	name character varying (200) not null,
-	code character (9),
+	code character (9) not null,
 	website character varying (200),
 	email character varying (200),
 	timetable character varying (200),
 	colour character (7),
 	logo character varying (200),
 	constraint pk_organisation_id primary key (id),
-	constraint fk_organisation_countryid foreign key (country_id) references country (id)
+	constraint fk_organisation_countryid foreign key (country_id) references country (id),
+	constraint uq_organisation_code unique (code)
 );
 
 create unique index idx_organisation_id on organisation (id);
+create unique index idx_organisation_code on organisation (code);
+create index idx_organisation_name on organisation (name);
 cluster organisation using idx_organisation_id;

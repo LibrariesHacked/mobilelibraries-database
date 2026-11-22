@@ -1,0 +1,1 @@
+"C:\Program Files\pgAdmin 4\runtime\psql.exe" --set=sslmode=require -f update.sql -h host -p 5432 -U username mobiles

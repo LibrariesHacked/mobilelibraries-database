@@ -12,34 +12,23 @@ begin
         return;
     end if;
 
-    -- Find all the currently active mobiles
-    create temp table temp_mobile_trips (
-        mobile_id int,
-        origin_stop_id int,
-        origin_departure timestamp,
-        destination_stop_id int,
-        destination_arrival timestamp,
-        geom geometry
-    );
-
-    -- the ones we're interested in are those 'on the road', active today, not at a stop, and within their route start and finish
-    insert into temp_mobile_trips(mobile_id, origin_stop_id, origin_departure, destination_stop_id, destination_arrival, geom)
-    select 
-        s.mobile_id,
-        s.previous_stop_id,
-        s.previous_stop_departure,
-        s.next_stop_id,
-        s.next_stop_arrival, 
-        t.geom
-    from vw_mobiles_status s
-    join trip t on t.origin_stop_id = s.previous_stop_id and t.destination_stop_id = s.next_stop_id
-    where visit = (now() at time zone 'Europe/London')::date
-    and previous_stop_id is not null
-    and next_stop_id is not null
-    and route_start < (now() at time zone 'Europe/London')::time
-    and route_finish > (now() at time zone 'Europe/London')::time;
-
-    delete from location;
+    -- In-memory CTE instead of creating/dropping temporary tables
+    with active_trips as (
+        select 
+            s.mobile_id,
+            s.previous_stop_id,
+            s.previous_stop_departure,
+            s.next_stop_id,
+            s.next_stop_arrival, 
+            t.geom
+        from vw_mobiles_status s
+        join trip t on t.origin_stop_id = s.previous_stop_id and t.destination_stop_id = s.next_stop_id
+        where visit = (now() at time zone 'Europe/London')::date
+        and previous_stop_id is not null
+        and next_stop_id is not null
+        and route_start < (now() at time zone 'Europe/London')::time
+        and route_finish > (now() at time zone 'Europe/London')::time
+    )
     insert into location(mobile_id, section_interval, update_type, updated, geom, section)
     select
         t.mobile_id,
@@ -48,17 +37,13 @@ begin
         (now() at time zone 'Europe/London'),
         fn_estimate_location(t.geom, t.origin_departure, t.destination_arrival),
         fn_estimate_route_section(t.geom, t.origin_departure, t.destination_arrival, section_interval, smoothness)
-    from temp_mobile_trips t
+    from active_trips t
     order by t.mobile_id;
 
-    drop table temp_mobile_trips;
-
-    -- now update the updates table
-    if last_updated is not null then
-        update updates set updated = (now() at time zone 'Europe/London') where type = 'estimated_location';
-    else
-        insert into updates (type, updated) values ('estimated_location', (now() at time zone 'Europe/London'));
-    end if;
+    -- Upsert timestamp
+    insert into updates (type, updated)
+    values ('estimated_location', (now() at time zone 'Europe/London'))
+    on conflict (type) do update set updated = excluded.updated;
 
     return;
 

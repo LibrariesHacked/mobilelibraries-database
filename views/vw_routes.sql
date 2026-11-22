@@ -1,8 +1,9 @@
-create view vw_routes as
+create or replace view vw_routes as
 select
     r.id,
     o.id as organisation_id,
     o.code as service_code,
+    o.code as local_authority_code,
     m.id as mobile_id,
     r.name as name,
     r.frequency,
