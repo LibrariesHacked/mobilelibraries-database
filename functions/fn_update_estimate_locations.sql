@@ -12,14 +12,16 @@ begin
         return;
     end if;
 
+    delete from mobile_location;
+
     -- In-memory CTE instead of creating/dropping temporary tables
     with active_trips as (
         select 
             s.mobile_id,
             s.previous_stop_id,
-            s.previous_stop_departure,
+            s.previous_stop_departure as origin_departure,
             s.next_stop_id,
-            s.next_stop_arrival, 
+            s.next_stop_arrival as destination_arrival, 
             t.geom
         from vw_mobiles_status s
         join trip t on t.origin_stop_id = s.previous_stop_id and t.destination_stop_id = s.next_stop_id
