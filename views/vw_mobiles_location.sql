@@ -1,4 +1,4 @@
-create view vw_mobiles_location as
+create or replace view vw_mobiles_location as
 select 
     ms.mobile_id,
     ms.current_stop_id,
@@ -17,4 +17,4 @@ select
     l.updated
 from vw_mobiles_status ms
 left join stop cs on cs.id = ms.current_stop_id
-left join location l on l.mobile_id = ms.mobile_id;
+left join mobile_location l on l.mobile_id = ms.mobile_id;

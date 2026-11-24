@@ -6,7 +6,8 @@ create table stop (
 	postcode character varying (8),
 	type character varying (200) not null default 'Public',
 	timetable character varying (200),
-	constraint pk_stop_id primary key (id)
+	constraint pk_stop_id primary key (id),
+	constraint ck_stop_type check (type in ('Public', 'Private', 'Dynamic', 'Other'))
 );
 
 select addgeometrycolumn ('public', 'stop', 'geom', 4326, 'POINT', 2);

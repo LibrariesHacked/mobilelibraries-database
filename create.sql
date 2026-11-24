@@ -15,7 +15,7 @@ set client_encoding = 'UTF8';
 
 -- create tables
 \i 'tables/tbl_country.sql';
-\i 'tables/tbl_organisation.sql';
+\i 'tables/tbl_local_authority.sql';
 \i 'tables/tbl_mobile.sql';
 \i 'tables/tbl_route.sql';
 \i 'tables/tbl_route_schedule.sql';
@@ -23,11 +23,12 @@ set client_encoding = 'UTF8';
 \i 'tables/tbl_route_stop.sql';
 \i 'tables/tbl_trip.sql';
 \i 'tables/tbl_trip_staging.sql';
-\i 'tables/tbl_location.sql';
-\i 'tables/tbl_staging.sql';
+\i 'tables/tbl_mobile_location.sql';
+\i 'tables/tbl_stop_staging.sql';
 \i 'tables/tbl_updates.sql';
 
 -- create views
+\i 'views/vw_local_authorities.sql';
 \i 'views/vw_organisations.sql';
 \i 'views/vw_mobiles.sql';
 \i 'views/vw_routes.sql';

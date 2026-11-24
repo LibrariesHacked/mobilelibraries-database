@@ -6,8 +6,8 @@ set client_encoding = 'UTF8';
 
 begin;
 
--- Truncate existing data tables (cascade handles dependent route_stop, location, route_schedule, trip)
-truncate table route_stop, trip, route_schedule, location, route, stop, mobile, organisation, country, updates restart identity cascade;
+-- Truncate existing data tables (cascade handles dependent route_stop, mobile_location, route_schedule, trip)
+truncate table route_stop, trip, route_schedule, mobile_location, route, stop, mobile, local_authority, country, updates restart identity cascade;
 
 -- Load latest data from load.sql
 \i 'load.sql';

@@ -29,7 +29,7 @@ begin
         and route_start < (now() at time zone 'Europe/London')::time
         and route_finish > (now() at time zone 'Europe/London')::time
     )
-    insert into location(mobile_id, section_interval, update_type, updated, geom, section)
+    insert into mobile_location(mobile_id, section_interval, update_type, updated, geom, section)
     select
         t.mobile_id,
         section_interval,

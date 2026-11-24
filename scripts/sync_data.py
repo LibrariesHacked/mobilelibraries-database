@@ -22,6 +22,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = REPO_ROOT / 'data'
 ROUTES_DIR = DATA_DIR / 'routes'
 ORGS_CSV = DATA_DIR / 'organisations.csv'
+LOCAL_AUTHORITIES_CSV = DATA_DIR / 'local_authorities.csv'
 LOAD_SQL = REPO_ROOT / 'load.sql'
 UPDATE_SQL = REPO_ROOT / 'update.sql'
 
@@ -32,6 +33,8 @@ NAME_ALIASES = {
     'Durham': 'County Durham',
     'Scottish Borders': 'The Scottish Borders',
     'Anglesey': 'Isle of Anglesey',
+    'North Yorkshire County': 'North Yorkshire',
+    'Somerset County': 'Somerset',
 }
 
 # Inverted mapping to preserve database compatibility if needed
@@ -86,11 +89,10 @@ def sync_organisations(source_dir):
     org_by_name = {r['authority']: r for r in existing_orgs}
     org_by_code = {r['code']: r for r in existing_orgs if r['code']}
 
-    services_by_slug = {}
+    services_list = []
     with open(services_path, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
-        for r in reader:
-            services_by_slug[r['dataset_slug']] = r
+        services_list = list(reader)
 
     updated_orgs = []
     seen_authorities = set()
@@ -100,15 +102,20 @@ def sync_organisations(source_dir):
         # Check alias
         lookup_name = NAME_ALIASES.get(auth, auth)
 
-        # Find matching service by code or name
+        # Find matching service by code or name (prioritising active services)
         matched_service = None
-        for s in services_by_slug.values():
-            if s['local_authority'] == lookup_name or s['local_authority_code'] == org.get('code'):
+        for s in services_list:
+            if (s['local_authority'] == lookup_name or s['local_authority_code'] == org.get('code')) and s.get('has_mobile_service') == 'Yes':
                 matched_service = s
                 break
+        if not matched_service:
+            for s in services_list:
+                if s['local_authority'] == lookup_name or s['local_authority_code'] == org.get('code'):
+                    matched_service = s
+                    break
 
         if matched_service:
-            # Update authority name to canonical version (e.g. County Durham)
+            # Update authority name to canonical version (e.g. County Durham, Somerset)
             org['authority'] = matched_service['local_authority']
             org['country'] = matched_service.get('nation') or org.get('country', '')
             org['code'] = matched_service['local_authority_code']
@@ -120,7 +127,7 @@ def sync_organisations(source_dir):
             seen_authorities.add(org['authority'])
 
     # Add any active mobile library services missing from organisations.csv
-    for s in services_by_slug.values():
+    for s in services_list:
         if s.get('has_mobile_service') == 'Yes':
             auth_name = s['local_authority']
             if auth_name not in seen_authorities:
@@ -140,13 +147,14 @@ def sync_organisations(source_dir):
     # Sort by authority name
     updated_orgs.sort(key=lambda x: x['authority'])
 
-    with open(ORGS_CSV, 'w', encoding='utf-8', newline='') as f:
-        fieldnames = ['authority', 'country', 'code', 'website', 'email', 'domain', 'colour', 'logo']
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(updated_orgs)
+    for target_csv in (ORGS_CSV, LOCAL_AUTHORITIES_CSV):
+        with open(target_csv, 'w', encoding='utf-8', newline='') as f:
+            fieldnames = ['authority', 'country', 'code', 'website', 'email', 'domain', 'colour', 'logo']
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(updated_orgs)
 
-    print(f"Updated {ORGS_CSV} with {len(updated_orgs)} authorities.")
+    print(f"Updated {ORGS_CSV} and {LOCAL_AUTHORITIES_CSV} with {len(updated_orgs)} authorities.")
 
 
 def sync_data_files(source_dir):
@@ -197,14 +205,17 @@ def sync_data_files(source_dir):
         with open(dest_sf, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             first_row = next(reader, None)
-            authority_name = first_row.get('Local authority') if first_row else slug.replace('_', ' ').title()
+            authority_name = (
+                (first_row.get('local_authority') or first_row.get('Local authority'))
+                if first_row else slug.replace('_', ' ').title()
+            )
             stops_count = (1 if first_row else 0) + sum(1 for _ in reader)
 
         synced.append((authority_name, slug, stops_count, trips_count))
 
     # Clean up obsolete authority files in data/
     for existing_f in DATA_DIR.glob('*.csv'):
-        if existing_f.name == 'organisations.csv':
+        if existing_f.name in ('organisations.csv', 'local_authorities.csv'):
             continue
         if existing_f.stem.endswith('_routes'):
             # Old route files in data root are superseded by data/routes/
@@ -228,8 +239,8 @@ def generate_load_sql(synced_datasets):
     Generates load.sql dynamically for all synced authorities in alphabetical order.
     """
     lines = []
-    lines.append("-- create temp table for orgs")
-    lines.append("create table organisation_temp (")
+    lines.append("-- create temp table for local authorities")
+    lines.append("create table local_authority_temp (")
     lines.append("\tname character varying (200) not null,")
     lines.append("\tcountry character varying (200) not null,")
     lines.append("\tcode character (9),")
@@ -240,18 +251,18 @@ def generate_load_sql(synced_datasets):
     lines.append("\tlogo character varying (200)")
     lines.append(");")
     lines.append("")
-    lines.append("-- import organisations")
-    lines.append("\\copy organisation_temp from 'data/organisations.csv' csv header;")
+    lines.append("-- import local authorities")
+    lines.append("\\copy local_authority_temp from 'data/local_authorities.csv' csv header;")
     lines.append("")
     lines.append("-- import countries")
     lines.append("insert into country(name)")
-    lines.append("select distinct country from organisation_temp order by country;")
+    lines.append("select distinct country from local_authority_temp order by country;")
     lines.append("")
-    lines.append("-- insert into organisation table")
-    lines.append("insert into organisation(name, country_id, code, website, email, colour, logo)")
-    lines.append("select t.name, c.id, t.code, t.website, t.email, t.colour, t.logo from organisation_temp t join country c on c.name = t.country order by c.id, t.name;")
+    lines.append("-- insert into local_authority table")
+    lines.append("insert into local_authority(name, country_id, code, website, email, colour, logo)")
+    lines.append("select t.name, c.id, t.code, t.website, t.email, t.colour, t.logo from local_authority_temp t join country c on c.name = t.country order by c.id, t.name;")
     lines.append("")
-    lines.append("drop table organisation_temp;")
+    lines.append("drop table local_authority_temp;")
     lines.append("")
 
     # Sort datasets alphabetically by authority name
@@ -260,12 +271,12 @@ def generate_load_sql(synced_datasets):
     for authority_name, slug, stops_count, trips_count in sorted_datasets:
         escaped_name = authority_name.replace("'", "''")
         lines.append(f"-- load {authority_name}")
-        lines.append(f"\\copy staging from 'data/{slug}.csv' csv header;")
-        lines.append(f"select fn_load_stops_staging(organisation_name := '{escaped_name}');")
+        lines.append(f"\\copy stop_staging from 'data/{slug}.csv' csv header;")
+        lines.append(f"select fn_load_stops_staging(local_authority_name := '{escaped_name}');")
         route_file = f"data/routes/{slug}_routes.csv"
         if (ROUTES_DIR / f"{slug}_routes.csv").exists():
             lines.append(f"\\copy trip_staging from '{route_file}' csv header;")
-            lines.append(f"select fn_load_trips_staging(organisation_name := '{escaped_name}');")
+            lines.append(f"select fn_load_trips_staging(local_authority_name := '{escaped_name}');")
         lines.append("")
 
     lines.append("-- update schedule and location estimates")
@@ -292,8 +303,8 @@ set client_encoding = 'UTF8';
 
 begin;
 
--- Truncate existing data tables (cascade handles dependent route_stop, location, route_schedule, trip)
-truncate table route_stop, trip, route_schedule, location, route, stop, mobile, organisation, country, updates restart identity cascade;
+-- Truncate existing data tables (cascade handles dependent route_stop, mobile_location, route_schedule, trip)
+truncate table route_stop, trip, route_schedule, mobile_location, route, stop, mobile, local_authority, country, updates restart identity cascade;
 
 -- Load latest data from load.sql
 \\i 'load.sql';

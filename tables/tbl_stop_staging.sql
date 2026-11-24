@@ -1,4 +1,4 @@
-create table staging (
+create table stop_staging (
 	local_authority character varying (200) not null,
 	local_authority_code character (9) not null,
 	mobile_name character varying (200) not null,
@@ -17,5 +17,7 @@ create table staging (
 	"start" date not null,
 	"end" date,
 	exceptions text,
-	timetable character varying (200)
+	timetable character varying (200),
+	constraint ck_stopstaging_day check (day in ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
+	constraint ck_stopstaging_type check (type in ('Public', 'Private', 'Dynamic', 'Other'))
 );

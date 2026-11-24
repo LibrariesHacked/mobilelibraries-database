@@ -1,12 +1,12 @@
 create table mobile (
 	id serial,
-	organisation_id integer not null,
+	local_authority_id integer not null,
 	name character varying (200) not null,
 	timetable character varying (200),
 	constraint pk_mobile_id primary key (id),
-	constraint fk_mobile_organisationid foreign key (organisation_id) references organisation (id)
+	constraint fk_mobile_localauthorityid foreign key (local_authority_id) references local_authority (id)
 );
 
 create unique index idx_mobile_id on mobile (id);
-create index idx_mobile_organisationid on mobile (organisation_id);
+create index idx_mobile_localauthorityid on mobile (local_authority_id);
 cluster mobile using idx_mobile_id;

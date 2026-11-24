@@ -4,6 +4,7 @@ select
      s.name,
      m.id as mobile_id,
      r.id as route_id,
+     rstop.day,
      (rs.visit + rstop.arrival) as arrival,
      (rs.visit + rstop.departure) as departure
 from stop s
