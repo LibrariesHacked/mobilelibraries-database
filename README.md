@@ -36,6 +36,19 @@ psql --set=sslmode=require -f update.sql -h <host> -p 5432 -U <username> mobiles
 
 On Windows, a template script is provided in `update.bat.template`.
 
+## Automated SQL Tests
+
+The views and SQL functions can be tested locally without installing or connecting to a PostgreSQL server. The test suite runs the repository's schema, views, and functions in an in-memory PostgreSQL database powered by PGlite, with its PostGIS extension enabled, and loads a small sample timetable.
+
+Install Node.js 20 or later, then run:
+
+```console
+npm ci
+npm test
+```
+
+The PostGIS extension for PGlite is experimental. Its build lacks protobuf-c support, so MVT tests replace the tile-encoding aggregate with a counter and the MVT clipping helper with a pass-through function; they verify wrapper filtering and feature selection but not clipping or encoded vector-tile bytes. These tests provide fast SQL and data-behavior checks, but they do not replace validation against the production PostgreSQL/PostGIS versions.
+
 ## Data Synchronization
 
 Data files in `data/` and `data/routes/` are synced from [LibrariesHacked/mobilelibraries-data](https://github.com/LibrariesHacked/mobilelibraries-data).

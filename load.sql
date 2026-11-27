@@ -1,4 +1,7 @@
 -- create temp table for local authorities
+\set ON_ERROR_STOP on
+\i 'functions/fn_load_trips_staging.sql';
+
 create table local_authority_temp (
 	name character varying (200) not null,
 	country character varying (200) not null,

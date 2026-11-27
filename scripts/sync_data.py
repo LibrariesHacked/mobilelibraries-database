@@ -239,6 +239,9 @@ def generate_load_sql(synced_datasets):
     Generates load.sql dynamically for all synced authorities in alphabetical order.
     """
     lines = []
+    lines.append("\\set ON_ERROR_STOP on")
+    lines.append("\\i 'functions/fn_load_trips_staging.sql';")
+    lines.append("")
     lines.append("-- create temp table for local authorities")
     lines.append("create table local_authority_temp (")
     lines.append("\tname character varying (200) not null,")

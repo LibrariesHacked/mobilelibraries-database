@@ -1,0 +1,12 @@
+{
+  "name": "mobilelibraries-database",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.6.1",
+    "@electric-sql/pglite-postgis": "^0.3.1"
+  }
+}

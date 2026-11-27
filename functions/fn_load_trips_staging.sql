@@ -2,6 +2,7 @@ create or replace function fn_load_trips_staging(local_authority_name character 
 $$
 declare
     var_local_authority_id integer := 0;
+    var_inserted_trip_count bigint := 0;
 begin
 
     -- firstly, the local authority name or code must be passed in.
@@ -33,6 +34,12 @@ begin
     join stop ds on ds.name = s.destination_stop 
         and ds.geom = st_setsrid(st_makepoint(s.destination_stop_longitude, s.destination_stop_latitude), 4326)
     on conflict (origin_stop_id, destination_stop_id) do nothing;
+
+    get diagnostics var_inserted_trip_count = row_count;
+
+    if var_inserted_trip_count = 0 and not exists (select 1 from trip) and exists (select 1 from trip_staging) then
+        raise exception 'No trips were loaded for %; check that staged routes match loaded mobiles and stops.', local_authority_name;
+    end if;
 
     delete from trip_staging;
 
