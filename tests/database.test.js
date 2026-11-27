@@ -559,3 +559,56 @@ test('fn_load_trips_staging raises instead of clearing unmatched staging on an e
     assert.equal((await firstRow('SELECT count(*)::int AS count FROM trip')).count, 0);
     assert.equal((await firstRow('SELECT count(*)::int AS count FROM trip_staging')).count, 1);
 });
+
+test('fn_load_trips_staging matches routes when the staged mobile label is stale', async () => {
+    await database.exec(`
+        DELETE FROM trip_staging;
+        TRUNCATE trip RESTART IDENTITY;
+        INSERT INTO trip_staging (
+            geom, destination_stop, destination_stop_latitude, destination_stop_longitude,
+            distance, duration, mobile, origin_stop, origin_stop_latitude,
+            origin_stop_longitude, route
+        ) VALUES (
+            'LINESTRING(-2.35 51.38,-2.33 51.38)', 'Destination Stop', 51.38, -2.33,
+            100, 60, 'Mobile', 'Origin Stop', 51.38, -2.35, 'Sample Route'
+        );
+    `);
+
+    await query("SELECT fn_load_trips_staging('Sample Council')");
+
+    const trip = await firstRow(`
+        SELECT t.distance, os.name AS origin, ds.name AS destination
+        FROM trip t
+        JOIN stop os ON os.id = t.origin_stop_id
+        JOIN stop ds ON ds.id = t.destination_stop_id
+    `);
+    assert.equal(trip.distance, 100);
+    assert.equal(trip.origin, 'Origin Stop');
+    assert.equal(trip.destination, 'Destination Stop');
+    assert.equal((await firstRow('SELECT count(*)::int AS count FROM trip_staging')).count, 0);
+});
+
+test('fn_load_trips_staging skips one-point geometries without blocking valid trips', async () => {
+    await database.exec(`
+        DELETE FROM trip_staging;
+        TRUNCATE trip RESTART IDENTITY;
+        INSERT INTO trip_staging (
+            geom, destination_stop, destination_stop_latitude, destination_stop_longitude,
+            distance, duration, mobile, origin_stop, origin_stop_latitude,
+            origin_stop_longitude, route
+        ) VALUES
+            (
+                'LINESTRING (-2.35 51.38)', 'Destination Stop', 51.38, -2.33,
+                100, 60, 'Sample Mobile', 'Origin Stop', 51.38, -2.35, 'Sample Route'
+            ),
+            (
+                'LINESTRING (-2.35 51.38,-2.34 51.38)', 'Current Stop', 51.38, -2.34,
+                50, 30, 'Sample Mobile', 'Origin Stop', 51.38, -2.35, 'Sample Route'
+            );
+    `);
+
+    await query("SELECT fn_load_trips_staging('Sample Council')");
+
+    assert.equal((await firstRow('SELECT count(*)::int AS count FROM trip')).count, 1);
+    assert.equal((await firstRow('SELECT count(*)::int AS count FROM trip_staging')).count, 0);
+});

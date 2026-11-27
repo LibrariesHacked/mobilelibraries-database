@@ -19,7 +19,7 @@ begin
         raise exception 'Local authority not found in the database: %', local_authority_name;
     end if;
 
-    -- Direct join on origin and destination stops utilizing spatial coordinates
+    -- Match trips through their loaded route because staged mobile labels may be stale
     insert into trip (origin_stop_id, destination_stop_id, distance, duration, geom)
     select distinct
         os.id as origin_stop_id,
@@ -28,11 +28,13 @@ begin
         s.duration,
         st_geomfromtext(s.geom, 4326) as geom
     from trip_staging s
-    join mobile m on m.name = s.mobile and m.local_authority_id = var_local_authority_id
+    join route r on r.name = s.route
+    join mobile m on m.id = r.mobile_id and m.local_authority_id = var_local_authority_id
     join stop os on os.name = s.origin_stop 
         and os.geom = st_setsrid(st_makepoint(s.origin_stop_longitude, s.origin_stop_latitude), 4326)
     join stop ds on ds.name = s.destination_stop 
         and ds.geom = st_setsrid(st_makepoint(s.destination_stop_longitude, s.destination_stop_latitude), 4326)
+    where btrim(s.geom) ~* '^LINESTRING[[:space:]]*\([^,]+,[^)]+\)$'
     on conflict (origin_stop_id, destination_stop_id) do nothing;
 
     get diagnostics var_inserted_trip_count = row_count;
